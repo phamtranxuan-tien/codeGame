@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\UIT_study\Ky nang nghe nghiep\Code_Game_Real1\Đồ Án Game\SDL\SDL2_ttf_2_0_11\include;D:\UIT_study\Ky nang nghe nghiep\Code_Game_Real1\Đồ Án Game\SDL\SDL_mixer_1_2_12\include;D:\UIT_study\Ky nang nghe nghiep\Code_Game_Real1\Đồ Án Game\SDL\SDL_image_1_2_4\include;D:\UIT_study\Ky nang nghe nghiep\Code_Game_Real1\Đồ Án Game\SDL\SDL_1_2_15\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\UIT_study\Ky nang nghe nghiep\Code_Game_Real1\Đồ Án Game\SDL\SDL2_ttf_2_0_11\lib\x86;D:\UIT_study\Ky nang nghe nghiep\Code_Game_Real1\Đồ Án Game\SDL\SDL_mixer_1_2_12\lib\x86;D:\UIT_study\Ky nang nghe nghiep\Code_Game_Real1\Đồ Án Game\SDL\SDL_image_1_2_4\lib;D:\UIT_study\Ky nang nghe nghiep\Code_Game_Real1\Đồ Án Game\SDL\SDL_1_2_15\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\SDL\SDL_image_1_2_4\include;$(SolutionDir)\SDL\SDL_mixer_1_2_12\include;$(SolutionDir)\SDL\SDL2_ttf_2_0_11\include;$(SolutionDir)\SDL\SDL_1_2_15\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\SDL\SDL_1_2_15\lib\x86;$(SolutionDir)\SDL\SDL_image_1_2_4\lib;$(SolutionDir)\SDL\SDL_mixer_1_2_12\lib\x86;$(SolutionDir)\SDL\SDL2_ttf_2_0_11\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
