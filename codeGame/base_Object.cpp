@@ -4,6 +4,7 @@
 #include <string>
 #include <SDL_image.h>
 using namespace std;
+//Test lan 3
 base_Object::base_Object()
 {
     x = 0;
