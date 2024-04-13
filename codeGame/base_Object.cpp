@@ -12,6 +12,25 @@ base_Object::base_Object()
     image = NULL;
 }
 
+SDL_Surface* base_Object::LoadImageGIF2(const char* file_path)
+//SDL_Surface* base_Object::LoadImageGIF2(string file_path)
+{
+    // Load hình ảnh từ file
+//    SDL_Surface* loaded_image = IMG_Load(file_path.c_str());
+    SDL_Surface* loaded_image = IMG_Load(file_path);
+    if (!loaded_image)
+    {
+        printf("Unable to load image %s! SDL_image Error: %s\n", file_path, IMG_GetError());
+        return NULL;
+    }
+
+    // Optimize hình ảnh
+    SDL_Surface* optimized_image = SDL_ConvertSurface(loaded_image, loaded_image->format, 0);
+    SDL_FreeSurface(loaded_image); // Giải phóng bộ nhớ cho hình ảnh đã tải
+
+    return optimized_image;
+}
+
 SDL_Surface* base_Object::LoadImageGIF1(string file_path) {
     // Open the GIF file to read data
     SDL_RWops* file = SDL_RWFromFile(file_path.c_str(), "rb");
