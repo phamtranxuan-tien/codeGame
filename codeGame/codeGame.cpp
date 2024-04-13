@@ -3,7 +3,7 @@
 #include <string>
 #include <SDL_image.h>
 #include "main_Object.h"
-//Hello 
+//Hello 00000000000000000000000
 #undef main 
 using namespace std;
 
@@ -36,16 +36,16 @@ int main(int argc, char* argv[])
     
 
     main_Object g_object;
-    g_object.SetImage(g_object.LoadImage("Mine_02.png"));
+    g_object.SetImage(g_object.LoadImage("Mine_03.png"));
     if (g_object.GetImage() == NULL)
         return 0;
 
-    g_object.SetImage(resizeImage(g_object.GetImage(), 270 * 2.5, 175 * 2.5));
+    g_object.SetImage(resizeImage(g_object.GetImage(), 270, 175));
     g_object.SetImage(SplitBackground(g_object.GetImage()));
     ApplySurface(g_object.GetImage(), g_screen, 0, 0);
 
     int currentFrame = 0;
-    int frameDelay = 1000; // Delay between frames in milliseconds
+    int frameDelay = 100; // Delay between frames in milliseconds
     Uint32 lastFrameTime = 0;
     
     while (!is_quit)
@@ -67,6 +67,7 @@ int main(int argc, char* argv[])
 
         }
         ApplySurface(g_bkground.GetImage(), g_screen, 0, 0);
+        
         // Get current time
         Uint32 currentTime = SDL_GetTicks();
 
@@ -86,11 +87,17 @@ int main(int argc, char* argv[])
         // Calculate source rectangle for current frame
         SDL_Rect srcRect = { currentFrame * g_bkground.GetImage()->w, 0, g_bkground.GetImage()->w, g_bkground.GetImage()->h };
 
+        //// Clear the screen
+        //SDL_FillRect(g_screen, NULL, SDL_MapRGB(g_screen->format, 0, 0, 0));
+
+
         // Draw current frame of background GIF
         SDL_BlitSurface(g_bkground.GetImage(), &srcRect, g_screen, NULL);
 
         ApplySurface(g_object.GetImage(), g_screen, g_object.GetX(), g_object.GetY());
         g_object.Move();
+
+        // Update the screen
         if (SDL_Flip(g_screen) == -1)
             return 0;
     }

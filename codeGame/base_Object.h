@@ -13,6 +13,8 @@ protected:
 public:
 	base_Object();
 
+	SDL_Surface* LoadImageGIF2(const char*);
+//	SDL_Surface* LoadImageGIF2(string);
 	SDL_Surface* LoadImageGIF1(string);
 	SDL_Surface* LoadImageGIF(string);
 	SDL_Surface* LoadImage(string);
