@@ -75,11 +75,6 @@ int main(int argc, char* argv[])
 
         ApplySurface(frames[currentFrame], screen, 0, 0);
 
-
-
-
-
-
         a.clear();
         ApplySurface(g_bkground.GetImage(), screen, 0, 0);
         ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
