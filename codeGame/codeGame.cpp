@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
     if (g_object.GetImage() == NULL)
         return 0;
 
-    //g_object.SetImage(resizeImage(g_object.GetImage(), 100/7, 95/7));
+    g_object.SetImage(resizeImage(g_object.GetImage(), 270 * 2.5, 175 * 2.5));
     g_object.SetImage(SplitBackground(g_object.GetImage()));
     ApplySurface(g_object.GetImage(), g_screen, 0, 0);
 
