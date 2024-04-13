@@ -3,7 +3,7 @@
 #include <string>
 #include <SDL_image.h>
 #include "main_Object.h"
-//Hello Dung
+//Hello Dung.
 #undef main 
 using namespace std;
 
