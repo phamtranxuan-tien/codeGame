@@ -13,9 +13,9 @@ int main(int argc, char* argv[])
     enemy_Object enemy;
     vector <bullet_Object> a;
     
-   // g_bkground.SetImage(g_bkground.LoadImage("background_01.gif"));
-    //g_bkground.SetImage(g_bkground.resizeImage(g_bkground.GetImage(), SCREEN_WIDTH, SCREEN_HEIGHT));
-    //ApplySurface(g_bkground.GetImage(), screen, 0, 0);
+    g_bkground.SetImage(g_bkground.LoadImage("background_01.gif"));
+    g_bkground.SetImage(g_bkground.resizeImage(g_bkground.GetImage(), SCREEN_WIDTH, SCREEN_HEIGHT));
+    ApplySurface(g_bkground.GetImage(), screen, 0, 0);
     
     if (plane.GetImage() == NULL)
         return 0;
