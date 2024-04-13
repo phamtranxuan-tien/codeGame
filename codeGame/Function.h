@@ -15,11 +15,11 @@ using namespace std;
 #define FUNCTIONS_H
 
 //Khai bao cac hang so
-const int SCREEN_WIDTH = 1200;
-const int SCREEN_HEIGHT = 600;
+const int SCREEN_WIDTH = 1280;
+const int SCREEN_HEIGHT = 720;
 const int SCREEN_BPP = 32;
 const int NUM_FRAMES = 8;
-const int FRAME_DELAY = 100; // milliseconds
+const int FRAME_DELAY = 50; // milliseconds
 
 //Khai bao bien toan cuc
 extern SDL_Surface* screen;

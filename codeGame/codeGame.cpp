@@ -23,6 +23,8 @@ int main(int argc, char* argv[])
 //    plane.SetImage(plane.resizeImage(plane.GetImage(), 270 , 175));
     plane.SetImage(plane.SplitBackground(plane.GetImage()));
 
+    ApplySurface(plane.GetImage(), screen, 0, 0);
+
     // Load các frame ảnh vào một mảng
     SDL_Surface* frames[NUM_FRAMES];
     for (int i = 0; i < NUM_FRAMES; ++i) {
@@ -34,11 +36,8 @@ int main(int argc, char* argv[])
         }
     }
 
-
     int currentFrame = 0;
     Uint32 lastFrameTime = 0;
-
-
     while (!is_quit)
     {
         while (SDL_PollEvent(&event))
@@ -73,18 +72,18 @@ int main(int argc, char* argv[])
             lastFrameTime = currentTime;
         }
 
+        // Ve frame hien tai cua background
         ApplySurface(frames[currentFrame], screen, 0, 0);
 
         a.clear();
-        ApplySurface(g_bkground.GetImage(), screen, 0, 0);
+//        ApplySurface(g_bkground.GetImage(), screen, 0, 0);
         ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
         ApplySurface(enemy.GetImage(), screen, enemy.GetX(), enemy.GetY());
         plane.Move();
         plane.Shoot();
         enemy.Move();
-//        SDL_Delay(50);
-        if (SDL_Flip(screen) == -1)
-            return 0;
+        //if (SDL_Flip(screen) == -1)
+        //    return 0;
 
         // Cập nhật màn hình
         SDL_Flip(screen);
