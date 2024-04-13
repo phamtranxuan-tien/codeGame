@@ -19,7 +19,6 @@ public:
 	int GetX();
 	void SetY(int);
 	int GetY();
-	SDL_Surface* resizeImage(SDL_Surface*, int, int);
 	SDL_Surface* SplitBackground(SDL_Surface*);
 };
 

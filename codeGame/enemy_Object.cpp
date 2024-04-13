@@ -11,5 +11,5 @@ enemy_Object::enemy_Object()
 void enemy_Object::Move()
 {
 	if (x > 0)
-		x=x-0.05;
+		x = x - 10;
 }
