@@ -3,7 +3,6 @@
 #include <string>
 #include <SDL_image.h>
 #include "main_Object.h"
-//Hello 
 #undef main 
 using namespace std;
 
@@ -36,11 +35,11 @@ int main(int argc, char* argv[])
     
 
     main_Object g_object;
-    g_object.SetImage(g_object.LoadImage("Mine_02.png"));
+    g_object.SetImage(g_object.LoadImage("Mine_03.png"));
     if (g_object.GetImage() == NULL)
         return 0;
 
-    g_object.SetImage(resizeImage(g_object.GetImage(), 270 * 2.5, 175 * 2.5));
+    g_object.SetImage(resizeImage(g_object.GetImage(), 270 /2, 175 /2));
     g_object.SetImage(SplitBackground(g_object.GetImage()));
     ApplySurface(g_object.GetImage(), g_screen, 0, 0);
 
