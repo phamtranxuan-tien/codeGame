@@ -3,22 +3,20 @@
 #include <string>
 #include <SDL_image.h>
 #include "main_Object.h"
-//Hello 00000000000000000000000
 #undef main 
 using namespace std;
 
-//Khai bao cac hang so
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
+const int NUM_FRAMES = 8;
+const int FRAME_DELAY = 100; // milliseconds
 
 const int SCREEN_BPP = 32;
 
 SDL_Surface* g_screen = NULL;
 SDL_Event g_even;
 
-//Khai bao ham
 bool Init();
-
 void ApplySurface(SDL_Surface*, SDL_Surface*, int, int);
 void CleanUp(base_Object);
 SDL_Surface* resizeImage(SDL_Surface*, int, int);
@@ -28,12 +26,8 @@ int main(int argc, char* argv[])
 {
     bool is_quit = false;
 
-    Init();
-    base_Object g_bkground;
-    g_bkground.SetImage(g_bkground.LoadImageGIF("background_01.gif"));
-    g_bkground.SetImage(resizeImage(g_bkground.GetImage(), 1280, 720));
-    ApplySurface(g_bkground.GetImage(), g_screen, 0, 0);
-    
+    if (!Init())
+        return 1;
 
     main_Object g_object;
     g_object.SetImage(g_object.LoadImage("Mine_03.png"));
@@ -44,10 +38,21 @@ int main(int argc, char* argv[])
     g_object.SetImage(SplitBackground(g_object.GetImage()));
     ApplySurface(g_object.GetImage(), g_screen, 0, 0);
 
+    // Load các frame ảnh vào một mảng
+    SDL_Surface* frames[NUM_FRAMES];
+    for (int i = 0; i < NUM_FRAMES; ++i) {
+        std::string filename = "frame_" + std::to_string(i) + ".png";
+        frames[i] = IMG_Load(filename.c_str());
+        if (frames[i] == nullptr) {
+            std::cerr << "Failed to load frame " << filename << "!" << std::endl;
+            return 1;
+        }
+    }
+
+
     int currentFrame = 0;
-    int frameDelay = 100; // Delay between frames in milliseconds
     Uint32 lastFrameTime = 0;
-    
+
     while (!is_quit)
     {
         while (SDL_PollEvent(&g_even))
@@ -63,50 +68,34 @@ int main(int argc, char* argv[])
                 break;
             }
             g_object.Action(g_even);
-            
-
         }
-        ApplySurface(g_bkground.GetImage(), g_screen, 0, 0);
-        
-        // Get current time
+
+        // Kiểm tra xem đã đủ thời gian để chuyển sang khung hình mới chưa
         Uint32 currentTime = SDL_GetTicks();
-
-        // Update frame if enough time has passed
-        if (currentTime - lastFrameTime >= frameDelay)
-        {
-            // Move to the next frame
-            currentFrame++;
-            if (currentFrame >= g_bkground.GetImage()->w)
-            {
-                currentFrame = 0; // Loop back to the beginning
-            }
-
+        if (currentTime - lastFrameTime >= FRAME_DELAY) {
+            // Chuyển sang khung hình tiếp theo
+            currentFrame = (currentFrame + 1) % NUM_FRAMES;
             lastFrameTime = currentTime;
         }
 
-        // Calculate source rectangle for current frame
-        SDL_Rect srcRect = { currentFrame * g_bkground.GetImage()->w, 0, g_bkground.GetImage()->w, g_bkground.GetImage()->h };
-
-        //// Clear the screen
-        //SDL_FillRect(g_screen, NULL, SDL_MapRGB(g_screen->format, 0, 0, 0));
-
-
-        // Draw current frame of background GIF
-        SDL_BlitSurface(g_bkground.GetImage(), &srcRect, g_screen, NULL);
-
+        ApplySurface(frames[currentFrame], g_screen, 0, 0);
         ApplySurface(g_object.GetImage(), g_screen, g_object.GetX(), g_object.GetY());
         g_object.Move();
 
-        // Update the screen
-        if (SDL_Flip(g_screen) == -1)
-            return 0;
+        // Cập nhật màn hình
+        SDL_Flip(g_screen);
     }
-    CleanUp(g_bkground);
+
+    // Giải phóng bộ nhớ
+    for (int i = 0; i < NUM_FRAMES; ++i) {
+        SDL_FreeSurface(frames[i]);
+    }
+
+    CleanUp(g_object);
     SDL_Quit();
     return 1;
 }
 
-// Kiểm tra lỗi khi khởi tạo SDL
 bool Init()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
@@ -121,10 +110,6 @@ bool Init()
     return true;
 }
 
-// Load ảnh và kiểm tra lỗi
-
-
-// Vẽ ảnh lên màn hình
 void ApplySurface(SDL_Surface* src, SDL_Surface* des, int x, int y)
 {
     SDL_Rect offset;
@@ -133,37 +118,29 @@ void ApplySurface(SDL_Surface* src, SDL_Surface* des, int x, int y)
     SDL_BlitSurface(src, NULL, des, &offset);
 }
 
-// Free surface và thoát SDL
-void CleanUp(base_Object g_bkground)
+void CleanUp(base_Object g_object)
 {
     SDL_FreeSurface(g_screen);
-    SDL_FreeSurface(g_bkground.GetImage());
+    SDL_FreeSurface(g_object.GetImage());
 }
 
-//Resize kích thước ảnh
 SDL_Surface* resizeImage(SDL_Surface* image, int newWidth, int newHeight) {
-    // Tạo một surface mới với kích thước mới
     SDL_Surface* newSurface = SDL_CreateRGBSurface(0, newWidth, newHeight, 32, 0, 0, 0, 0);
     if (newSurface == nullptr) {
         cerr << "Error creating new surface: " << SDL_GetError() << endl;
         return nullptr;
     }
 
-    // Tính toán tỷ lệ scale
     float scaleX = (float)newWidth / image->w;
     float scaleY = (float)newHeight / image->h;
 
-    // Lặp qua từng pixel của surface mới và sao chép giá trị pixel từ surface cũ
     for (int y = 0; y < newHeight; ++y) {
         for (int x = 0; x < newWidth; ++x) {
-            // Tính toán tọa độ tương ứng trên surface cũ
             int oldX = (int)(x / scaleX);
             int oldY = (int)(y / scaleY);
 
-            // Lấy màu pixel từ surface cũ
             Uint32 pixel = ((Uint32*)image->pixels)[oldY * image->w + oldX];
 
-            // Đặt màu pixel vào surface mới
             ((Uint32*)newSurface->pixels)[y * newWidth + x] = pixel;
         }
     }
@@ -171,7 +148,6 @@ SDL_Surface* resizeImage(SDL_Surface* image, int newWidth, int newHeight) {
     return newSurface;
 }
 
-//Tách nền xanh cho nhân vật
 SDL_Surface* SplitBackground(SDL_Surface* image)
 {
     if (image != NULL)
