@@ -3,13 +3,7 @@
 #include <string>
 #include <SDL_image.h>
 #include "main_Object.h"
-//Hello 
-<<<<<<< HEAD
-// TEST 
-=======
-//HELLO
-//heloo
->>>>>>> 14f3d588f68cf0bf4064cfe7451161b9876c293d
+//hnt tester
 #undef main 
 using namespace std;
 
