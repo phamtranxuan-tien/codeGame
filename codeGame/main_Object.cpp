@@ -78,6 +78,5 @@ void main_Object::Shoot()
         bullets[i].Move();
         if (bullets[i].GetX() == SCREEN_WIDTH)
             bullets.erase(bullets.begin() + i);
-    
     }
 }

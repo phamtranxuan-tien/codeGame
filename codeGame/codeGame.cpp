@@ -55,12 +55,11 @@ int main(int argc, char* argv[])
             }
             if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
             {
-                bullet.Create_bullet(plane.GetX() +170, plane.GetY()+120, "fire_01.png");
+                bullet.Create_bullet(plane.GetX() + 170, plane.GetY() + 120, "fire_01.png");
                 bullet.SetShoot();
                 a = plane.GetBullet();
                 a.push_back(bullet);
                 plane.SetBullet(a);
-
             }
             plane.Action(event);
         }
