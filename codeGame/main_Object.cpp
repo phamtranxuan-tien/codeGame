@@ -1,10 +1,12 @@
-#include "main_Object.h"
+﻿#include "main_Object.h"
 #include "base_Object.h"
 #include <iostream>
 #include <SDL.h>
 #include <string>
 #include <SDL_image.h>
 using namespace std;
+
+// Test lần 2s
 main_Object::main_Object()
 {
 	x = 100;
