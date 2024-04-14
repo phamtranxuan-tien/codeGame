@@ -26,16 +26,16 @@ void main_Object::Action(SDL_Event event)
         switch (event.key.keysym.sym)
         {
         case SDLK_a:
-            x_val -= 1;
+            x_val -= 15;
             break;
         case SDLK_s:
-            y_val += 1;
+            y_val += 15;
             break;
         case SDLK_w:
-            y_val -= 1;
+            y_val -= 15;
             break;
         case SDLK_d:
-            x_val += 1;
+            x_val += 15;
             break;
         }
     }

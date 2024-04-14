@@ -8,36 +8,41 @@ int main(int argc, char* argv[])
 
     Init();
     main_Object plane;
-    base_Object g_bkground;
+    base_Object g;
     bullet_Object bullet;
     enemy_Object enemy;
     vector <bullet_Object> a;
-    
-   // g_bkground.SetImage(g_bkground.LoadImage("background_01.gif"));
-    //g_bkground.SetImage(g_bkground.resizeImage(g_bkground.GetImage(), SCREEN_WIDTH, SCREEN_HEIGHT));
-    //ApplySurface(g_bkground.GetImage(), screen, 0, 0);
-    
+    vector <enemy_Object> e;
+
+    for (int i = 0; i < 5; i++)
+    {
+        enemy_Object enemy_temp;
+        enemy_temp.RandomPos();
+        e.push_back(enemy_temp);
+    }
+
     if (plane.GetImage() == NULL)
         return 0;
 
-//    plane.SetImage(plane.resizeImage(plane.GetImage(), 270 , 175));
     plane.SetImage(plane.SplitBackground(plane.GetImage()));
 
     // Load các frame ảnh vào một mảng
-    SDL_Surface* frames[NUM_FRAMES];
+    SDL_Surface* frames[NUM_FRAMES] = { NULL };
+    SDL_Surface* temp = NULL;
     for (int i = 0; i < NUM_FRAMES; ++i) {
         std::string filename = "frame_" + std::to_string(i) + ".png";
-        frames[i] = IMG_Load(filename.c_str());
+        g.SetImage(g.LoadImage(filename));
+        frames[i] = g.GetImage();
         if (frames[i] == nullptr) {
             std::cerr << "Failed to load frame " << filename << "!" << std::endl;
             return 1;
         }
+        frames[i] = resizeImage(frames[i], SCREEN_WIDTH, SCREEN_HEIGHT);
     }
-
-
+    
     int currentFrame = 0;
     Uint32 lastFrameTime = 0;
-
+    Uint32 currentTime;
 
     while (!is_quit)
     {
@@ -63,43 +68,59 @@ int main(int argc, char* argv[])
             }
             plane.Action(event);
         }
-
-        // Kiểm tra xem đã đủ thời gian để chuyển sang khung hình mới chưa
         Uint32 currentTime = SDL_GetTicks();
+
+        // Kiểm tra thời gian giữa các frame
         if (currentTime - lastFrameTime >= FRAME_DELAY) {
-            // Chuyển sang khung hình tiếp theo
+            // Xóa màn hình
+            SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
+
+            // Vẽ hình ảnh của plane và enemy lên màn hình
+            ApplySurface(frames[currentFrame], screen, 0, 0);
+            ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
+
+            vector <bullet_Object> b = plane.GetBullet();
+
+            for (int i = 0; i < 5; i++)
+                if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                    ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
+            
+            for (int i = 0; i < 5; i++)
+                if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                    e[i].Destroy(b);
+
+            plane.SetBullet(b);
+            plane.Move();
+            plane.Shoot();
+
+            for (int i = 0; i < 5; i++)
+                if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                    e[i].Move();
+            // Cập nhật màn hình
+            SDL_Flip(screen);
+
+            // Cập nhật frame
             currentFrame = (currentFrame + 1) % NUM_FRAMES;
+
+            // Cập nhật thời gian cuối cùng
             lastFrameTime = currentTime;
         }
-
-        ApplySurface(frames[currentFrame], screen, 0, 0);
-
-
-
-
-
-
+        
         a.clear();
-        ApplySurface(g_bkground.GetImage(), screen, 0, 0);
-        ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
-        ApplySurface(enemy.GetImage(), screen, enemy.GetX(), enemy.GetY());
-        plane.Move();
-        plane.Shoot();
-        enemy.Move();
-//        SDL_Delay(50);
+       
+        // Cập nhật màn hình
         if (SDL_Flip(screen) == -1)
             return 0;
 
-        // Cập nhật màn hình
-        SDL_Flip(screen);
+     
     }
 
     // Giải phóng bộ nhớ
-    for (int i = 0; i < NUM_FRAMES; ++i) {
+    for (int i = 0; i < NUM_FRAMES; ++i)
+    {
         SDL_FreeSurface(frames[i]);
     }
-    CleanUp(g_bkground);
+    CleanUp(g);
     SDL_Quit();
     return 1;
 }
-
