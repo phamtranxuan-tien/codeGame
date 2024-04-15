@@ -15,8 +15,10 @@ main_Object::~main_Object()
 int y_val = 0, x_val = 0;
 void main_Object::Move()
 {
-    x += x_val;
-    y += y_val;
+    if (x + x_val >= 0 && x + x_val <= SCREEN_WIDTH - 270)
+        x += x_val;
+    if (y + y_val >= 0 && y + y_val <= SCREEN_HEIGHT - 175)
+        y += y_val;
 }
 
 void main_Object::Action(SDL_Event event)
@@ -76,7 +78,7 @@ void main_Object::Shoot()
     {
         ApplySurface(bullets[i].GetImage(), screen, bullets[i].GetX(), bullets[i].GetY());
         bullets[i].Move();
-        if (bullets[i].GetX() == SCREEN_WIDTH)
+        if (bullets[i].GetX() >= SCREEN_WIDTH)
             bullets.erase(bullets.begin() + i);
     }
 }

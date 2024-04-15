@@ -14,11 +14,12 @@ int main(int argc, char* argv[])
     enemy_Object enemy;
     vector <bullet_Object> a;
     vector <enemy_Object> e;
-
+    enemy_Object enemy_temp;
+    srand(time(NULL));
     for (int i = 0; i < 5; i++)
     {
-        enemy_Object enemy_temp;
-        enemy_temp.RandomPos();
+        enemy_temp.SetX((rand() % SCREEN_WIDTH) / 2 + SCREEN_WIDTH);
+        enemy_temp.SetY(rand() % (SCREEN_HEIGHT - 175));
         e.push_back(enemy_temp);
     }
 
