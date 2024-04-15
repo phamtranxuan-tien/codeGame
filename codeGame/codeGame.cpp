@@ -1,5 +1,6 @@
 ﻿#include "Function.h"
-
+#include <chrono>
+#include <thread>
 #undef main 
 
 int main(int argc, char* argv[])
@@ -84,7 +85,7 @@ int main(int argc, char* argv[])
             for (int i = 0; i < 5; i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
                     ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
-            
+
             for (int i = 0; i < 5; i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
                     e[i].Destroy(b);
@@ -105,14 +106,12 @@ int main(int argc, char* argv[])
             // Cập nhật thời gian cuối cùng
             lastFrameTime = currentTime;
         }
-        
+
         a.clear();
-       
+
         // Cập nhật màn hình
         if (SDL_Flip(screen) == -1)
             return 0;
-
-     
     }
 
     // Giải phóng bộ nhớ
