@@ -18,14 +18,14 @@ void enemy_Object::RandomPos()
 {
 	srand(time(NULL));
 	x = SCREEN_WIDTH;
-	y = rand() % SCREEN_HEIGHT;
+	y = SCREEN_HEIGHT - 600;
+	//y = rand() % SCREEN_HEIGHT;
 }
-
 
 void enemy_Object::Destroy(vector <bullet_Object>& a)
 {
 	for (int i = 0; i < a.size(); i++)
-		if (a[i].GetX() >= this->GetX() - 100 && a[i].GetY() <= this->GetY() + 100 && a[i].GetY() >= this->GetY() - 100)
+		if (a[i].GetX() >= this->GetX() - 30 && a[i].GetY() + 5 <= this->GetY() + 132 && a[i].GetY() + 5 >= this->GetY() + 40)
 		{
 			x = -1;
 			y = -1;
