@@ -12,18 +12,18 @@ int main(int argc, char* argv[])
     bullet_Object bullet;
     enemy_Object enemy;
     vector <bullet_Object> a;
-    
-   // g_bkground.SetImage(g_bkground.LoadImage("background_01.gif"));
-    //g_bkground.SetImage(g_bkground.resizeImage(g_bkground.GetImage(), SCREEN_WIDTH, SCREEN_HEIGHT));
-    //ApplySurface(g_bkground.GetImage(), screen, 0, 0);
-    
+
+    // g_bkground.SetImage(g_bkground.LoadImage("background_01.gif"));
+     //g_bkground.SetImage(g_bkground.resizeImage(g_bkground.GetImage(), SCREEN_WIDTH, SCREEN_HEIGHT));
+     //ApplySurface(g_bkground.GetImage(), screen, 0, 0);
+
     if (plane.GetImage() == NULL)
         return 0;
 
-//    plane.SetImage(plane.resizeImage(plane.GetImage(), 270 , 175));
+    plane.SetImage(plane.resizeImage(plane.GetImage(), 270/2 , 175/2));
     plane.SetImage(plane.SplitBackground(plane.GetImage()));
 
-    ApplySurface(plane.GetImage(), screen, 0, 0);
+    //ApplySurface(plane.GetImage(), screen, 0, 0);
 
     // Load các frame ảnh vào một mảng
     SDL_Surface* frames[NUM_FRAMES];
@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
             }
             if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
             {
-                bullet.Create_bullet(plane.GetX() +170, plane.GetY()+120, "fire_01.png");
+                bullet.Create_bullet(plane.GetX() + 170/2, plane.GetY() + 120/2, "fire_01.png");
                 bullet.SetShoot();
                 a = plane.GetBullet();
                 a.push_back(bullet);
@@ -66,17 +66,18 @@ int main(int argc, char* argv[])
 
         // Kiểm tra xem đã đủ thời gian để chuyển sang khung hình mới chưa
         Uint32 currentTime = SDL_GetTicks();
-        if (currentTime - lastFrameTime >= FRAME_DELAY) {
+        if (currentTime - lastFrameTime >= FRAME_DELAY * 0.5) {
             // Chuyển sang khung hình tiếp theo
             currentFrame = (currentFrame + 1) % NUM_FRAMES;
-            lastFrameTime = currentTime;
+            lastFrameTime = currentTime; 
         }
 
         // Ve frame hien tai cua background
-        ApplySurface(frames[currentFrame], screen, 0, 0);
+        // ApplySurface(frames[currentFrame], screen, 0, 0);
+        SDL_BlitSurface(frames[currentFrame], NULL, screen, NULL);
 
         a.clear();
-//        ApplySurface(g_bkground.GetImage(), screen, 0, 0);
+        //        ApplySurface(g_bkground.GetImage(), screen, 0, 0);
         ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
         ApplySurface(enemy.GetImage(), screen, enemy.GetX(), enemy.GetY());
         plane.Move();

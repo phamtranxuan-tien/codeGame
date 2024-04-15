@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <iostream>
 #include <SDL.h>
 #include <string>
@@ -18,8 +18,12 @@ using namespace std;
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
 const int SCREEN_BPP = 32;
-const int NUM_FRAMES = 8;
-const int FRAME_DELAY = 50; // milliseconds
+const int NUM_FRAMES = 80;
+// const int FRAME_DELAY = 100; // milliseconds
+
+const int FPS = 60; // Tần số khung hình mong muốn (60 khung hình mỗi giây)
+const int FRAME_DELAY = 150 / FPS; // Thời gian trễ giữa mỗi khung hình
+
 
 //Khai bao bien toan cuc
 extern SDL_Surface* screen;
