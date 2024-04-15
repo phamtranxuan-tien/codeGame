@@ -82,3 +82,13 @@ void main_Object::Shoot()
             bullets.erase(bullets.begin() + i);
     }
 }
+
+void main_Object::Crush(vector <enemy_Object> e)
+{
+    for (int i = 0; i < e.size(); ++i)
+        if (this->GetX() + 245 >= e[i].GetX() && this->GetY() + 96 >= e[i].GetY() && this->GetY() + 96 <= e[i].GetY() + 150)
+        {
+            this->SetX(-300);
+            this->SetY(-300);
+        }
+}

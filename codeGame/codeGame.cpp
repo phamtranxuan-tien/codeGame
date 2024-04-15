@@ -16,7 +16,8 @@ int main(int argc, char* argv[])
     vector <enemy_Object> e;
     enemy_Object enemy_temp;
     srand(time(NULL));
-    for (int i = 0; i < 5; i++)
+
+    for (int i = 0; i < Sum_of_Enemy; i++)
     {
         enemy_temp.SetX((rand() % SCREEN_WIDTH) / 2 + SCREEN_WIDTH);
         enemy_temp.SetY(rand() % (SCREEN_HEIGHT - 175));
@@ -65,11 +66,14 @@ int main(int argc, char* argv[])
             }
             if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
             {
-                bullet.Create_bullet(plane.GetX() + 170, plane.GetY() + 120, "fire_01.png");
-                bullet.SetShoot();
-                a = plane.GetBullet();
-                a.push_back(bullet);
-                plane.SetBullet(a);
+                if (plane.GetBullet().size()<Sum_of_Bullet)
+                {
+                    bullet.Create_bullet(plane.GetX() + 245, plane.GetY() + 96, "fire_01.png");
+                    bullet.SetShoot();
+                    a = plane.GetBullet();
+                    a.push_back(bullet);
+                    plane.SetBullet(a);
+                }
             }
             plane.Action(event);
         }
@@ -87,19 +91,28 @@ int main(int argc, char* argv[])
                 ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
             /*vector <bullet_Object> b = plane.GetBullet();
 
-            for (int i = 0; i < e.size(); i++)
-                if (!(e[i].GetX() == -1 && e[i].GetY() == -1))
-                    ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
+            vector <bullet_Object> b = plane.GetBullet();
 
             for (int i = 0; i < 5; i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                    ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
+
+            for (int i = 0; i < e.size(); i++)
+                if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                {
                     e[i].Destroy(b);
+                    if (e[i].GetX() == -1 && e[i].GetY() == -1)
+                        e.erase(e.begin() + i);
+                }
+              
 
             plane.SetBullet(b);*/
             plane.Move();
             plane.Shoot();
+            plane.Crush(e);
 
-            for (int i = 0; i < e.size(); i++)
+            for (int i = 0; i < 5; i++)
+                if (e[i].GetX() != -1 && e[i].GetY() != -1)
                     e[i].Move();
             // Cập nhật màn hình
             SDL_Flip(screen);

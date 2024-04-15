@@ -16,7 +16,7 @@ bullet_Object::~bullet_Object()
 void bullet_Object::Move()
 {
 	if (x < SCREEN_WIDTH)
-		x = x + 30;
+		x = x + 15;
 	else x = -1;
 }
 
