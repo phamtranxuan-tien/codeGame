@@ -17,10 +17,10 @@ int main(int argc, char* argv[])
     for (int i = 0; i < 5; i++)
     {
         enemy_Object enemy_temp;
-        enemy_temp.RandomPos();
         e.push_back(enemy_temp);
     }
-
+    for (int i = 0; i < e.size(); i++)
+        cout << e[i].GetY() << " ";
     if (plane.GetImage() == NULL)
         return 0;
 
@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
         }
         frames[i] = resizeImage(frames[i], SCREEN_WIDTH, SCREEN_HEIGHT);
     }
-    
+
     int currentFrame = 0;
     Uint32 lastFrameTime = 0;
     Uint32 currentTime;
@@ -79,23 +79,24 @@ int main(int argc, char* argv[])
             // Vẽ hình ảnh của plane và enemy lên màn hình
             ApplySurface(frames[currentFrame], screen, 0, 0);
             ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
+            for (int i=0;i<e.size();i++)
+                ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
+            /*vector <bullet_Object> b = plane.GetBullet();
 
-            vector <bullet_Object> b = plane.GetBullet();
-
-            for (int i = 0; i < 5; i++)
-                if (e[i].GetX() != -1 && e[i].GetY() != -1)
+            for (int i = 0; i < e.size(); i++)
+                if (!(e[i].GetX() == -1 && e[i].GetY() == -1))
                     ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
+                else e.erase(e.begin() + i);
             
-            for (int i = 0; i < 5; i++)
-                if (e[i].GetX() != -1 && e[i].GetY() != -1)
+            for (int i = 0; i < e.size(); i++)
+                if (!(e[i].GetX() == -1 && e[i].GetY() == -1))
                     e[i].Destroy(b);
 
-            plane.SetBullet(b);
+            plane.SetBullet(b);*/
             plane.Move();
             plane.Shoot();
 
-            for (int i = 0; i < 5; i++)
-                if (e[i].GetX() != -1 && e[i].GetY() != -1)
+            for (int i = 0; i < e.size(); i++)
                     e[i].Move();
             // Cập nhật màn hình
             SDL_Flip(screen);

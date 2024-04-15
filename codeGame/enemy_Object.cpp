@@ -14,12 +14,6 @@ void enemy_Object::Move()
 		x = x - 10;
 }
 
-void enemy_Object::RandomPos()
-{
-	srand(time(NULL));
-	x = SCREEN_WIDTH;
-	y = rand() % SCREEN_HEIGHT;
-}
 
 
 void enemy_Object::Destroy(vector <bullet_Object>& a)

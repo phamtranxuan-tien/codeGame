@@ -1,5 +1,8 @@
 #pragma once
 #include <iostream>
+#include <iomanip>
+#include <cstdlib> // for rand() and srand()
+#include <ctime>
 #include <SDL.h>
 #include <string>
 #include <SDL_image.h>
