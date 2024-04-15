@@ -1,4 +1,4 @@
-﻿#include "Function.h"
+#include "Function.h"
 #include <chrono>
 #include <thread>
 #undef main 
