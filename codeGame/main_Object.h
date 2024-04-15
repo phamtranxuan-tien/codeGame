@@ -1,6 +1,7 @@
 #pragma once
 #include "base_Object.h"
 #include "bullet_Object.h"
+#include "enemy_Object.h"
 #include <iostream>
 #include <SDL.h>
 #include <string>
@@ -20,5 +21,6 @@ public:
 	vector<bullet_Object> GetBullet();
 	void SetBullet(vector <bullet_Object>);
 	void Shoot();
+	void Die(vector<enemy_Object>);
 };
 

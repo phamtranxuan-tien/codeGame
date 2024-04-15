@@ -13,12 +13,15 @@ int main(int argc, char* argv[])
     bullet_Object bullet;
     enemy_Object enemy;
     vector <bullet_Object> a;
-    vector <enemy_Object> e;
+    vector<enemy_Object> e;
+    enemy_Object enemy_temp;
+    bullet_Object bulletenemy;
 
+    srand(time(NULL));
     for (int i = 0; i < 5; i++)
     {
-        enemy_Object enemy_temp;
-        enemy_temp.RandomPos();
+        enemy_temp.SetX((rand() % SCREEN_WIDTH) / 5 + SCREEN_WIDTH);
+        enemy_temp.SetY(rand() % SCREEN_HEIGHT);
         e.push_back(enemy_temp);
     }
 
@@ -82,13 +85,34 @@ int main(int argc, char* argv[])
 
             vector <bullet_Object> b = plane.GetBullet();
 
-            for (int i = 0; i < 5; i++)
-                if (e[i].GetX() != -1 && e[i].GetY() != -1)
+            std::vector<Uint32> enemyCooldowns(5, 0); // Assuming there are 5 enemies, initialize all to 0
+
+            // Inside the main game loop
+            for (int i = 0; i < 5; i++) {
+                if (e[i].GetX() != -1 && e[i].GetY() != -1) {
                     ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
 
+                    // Decrement the cooldown timer for this enemy
+                    if (enemyCooldowns[i] > 0) {
+                        enemyCooldowns[i]--;
+                    }
+
+                    // Check if the enemy is ready to shoot
+                    if (enemyCooldowns[i] == 0) {
+                        vector <bullet_Object> be;
+                        bulletenemy.Create_bullet(e[i].GetX(), e[i].GetY(), "fire_01.png");
+                        be.push_back(bulletenemy);
+                        // Set the cooldown timer to the desired value (e.g., 100 frames)
+                        //e[i].EnemyShoot();
+                        enemyCooldowns[i] = 1; // Adjust as needed';
+                    }
+                    
+                }
+            }
             for (int i = 0; i < 5; i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
                     e[i].Destroy(b);
+            plane.Die(e);
 
             plane.SetBullet(b);
             plane.Move();
@@ -116,9 +140,7 @@ int main(int argc, char* argv[])
 
     // Giải phóng bộ nhớ
     for (int i = 0; i < NUM_FRAMES; ++i)
-    {
         SDL_FreeSurface(frames[i]);
-    }
     CleanUp(g);
     SDL_Quit();
     return 1;

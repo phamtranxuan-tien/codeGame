@@ -14,14 +14,6 @@ void enemy_Object::Move()
 		x = x - 10;
 }
 
-void enemy_Object::RandomPos()
-{
-	srand(time(NULL));
-	x = SCREEN_WIDTH;
-	y = SCREEN_HEIGHT - 600;
-	//y = rand() % SCREEN_HEIGHT;
-}
-
 void enemy_Object::Destroy(vector <bullet_Object>& a)
 {
 	for (int i = 0; i < a.size(); i++)
@@ -32,4 +24,16 @@ void enemy_Object::Destroy(vector <bullet_Object>& a)
 			a.erase(a.begin() + i);
 			return;
 		}
+}
+
+void enemy_Object::EnemyShoot()
+{
+	for (int i = 0; i < 100; ++i)
+	{
+		ApplySurface(bullets[i].GetImage(), screen, bullets[i].GetX(), bullets[i].GetY());
+		bullets[i].MoveEnemy();
+		if (bullets[i].GetX() <= 25)
+			bullets.erase(bullets.begin() + i);
+
+	}
 }

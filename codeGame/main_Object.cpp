@@ -15,8 +15,10 @@ main_Object::~main_Object()
 int y_val = 0, x_val = 0;
 void main_Object::Move()
 {
-    x += x_val;
-    y += y_val;
+    if(x + x_val >= 0 && x + x_val + 270 <= 1200)
+        x += x_val;
+    if (y + y_val >= 0 && y + y_val + 175 <= 700)
+        y += y_val;
 }
 
 void main_Object::Action(SDL_Event event)
@@ -76,7 +78,17 @@ void main_Object::Shoot()
     {
         ApplySurface(bullets[i].GetImage(), screen, bullets[i].GetX(), bullets[i].GetY());
         bullets[i].Move();
-        if (bullets[i].GetX() == SCREEN_WIDTH)
+        if (bullets[i].GetX() >= SCREEN_WIDTH - 25)
             bullets.erase(bullets.begin() + i);
     }
+}
+
+void main_Object::Die(vector<enemy_Object> e)
+{
+    for (int i = 0; i < e.size(); ++i)
+        if (this->GetX() + 245 >= e[i].GetX() && this->GetY() +96 >= e[i].GetY() && this->GetY() + 96 <= e[i].GetY() + 150)
+        {
+            this->SetX(-200);
+            this->SetY(-200);
+        }
 }
