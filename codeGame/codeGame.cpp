@@ -30,6 +30,8 @@ int main(int argc, char* argv[])
 
     plane.SetImage(plane.SplitBackground(plane.GetImage()));
 
+    //ApplySurface(plane.GetImage(), screen, 0, 0);
+
     // Load các frame ảnh vào một mảng
     SDL_Surface* frames[NUM_FRAMES] = { NULL };
     SDL_Surface* temp = NULL;
