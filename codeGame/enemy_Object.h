@@ -7,5 +7,7 @@ private:
 public:
 	enemy_Object();
 	void Move();
+	void Destroy(vector <bullet_Object>&);
+	void RandomPos();
 };
 

@@ -5,8 +5,7 @@ void bullet_Object::Create_bullet(int xx, int yy, string filename)
 	x = xx;
 	y = yy;
 	image = LoadImage(filename);
-	image = resizeImage(image, 30, 10);
-	image = SplitBackground(image);
+	image = SplitBackground(resizeImage(image, 30, 10));
 }
 
 bullet_Object::~bullet_Object()
@@ -17,7 +16,7 @@ bullet_Object::~bullet_Object()
 void bullet_Object::Move()
 {
 	if (x < SCREEN_WIDTH)
-		x++;
+		x = x + 30;
 }
 
 void bullet_Object::SetShoot()
