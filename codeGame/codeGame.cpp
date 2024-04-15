@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
             ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
             for (int i=0;i<e.size();i++)
                 ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
-            /*vector <bullet_Object> b = plane.GetBullet();
+            vector <bullet_Object> b = plane.GetBullet();
 
             vector <bullet_Object> b = plane.GetBullet();
 
@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
                 }
               
 
-            plane.SetBullet(b);*/
+            plane.SetBullet(b);
             plane.Move();
             plane.Shoot();
             plane.Crush(e);
