@@ -79,6 +79,41 @@ int main(int argc, char* argv[])
                 currentFrame = 0; // Loop back to the beginning
             }
 
+<<<<<<< Updated upstream
+=======
+            // Vẽ hình ảnh của plane và enemy lên màn hình
+            ApplySurface(frames[currentFrame], screen, 0, 0);
+            ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
+
+            vector <bullet_Object> b = plane.GetBullet();
+
+            for (int i = 0; i < 5; i++)
+                if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                    ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
+            
+            for (int i = 0; i < 5; i++)
+            {
+                if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                    e[i].Destroy(b);
+                /*if (e[i].GetX() == -1 && e[i].GetY() == -1)
+                    e.erase(e.begin() + i);*/
+            }
+
+            plane.SetBullet(b);
+            plane.Move();
+            plane.Shoot();
+
+            for (int i = 0; i < 5; i++)
+                if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                    e[i].Move();
+            // Cập nhật màn hình
+            SDL_Flip(screen);
+
+            // Cập nhật frame
+            currentFrame = (currentFrame + 1) % NUM_FRAMES;
+
+            // Cập nhật thời gian cuối cùng
+>>>>>>> Stashed changes
             lastFrameTime = currentTime;
         }
 
