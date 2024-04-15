@@ -1,5 +1,6 @@
 ﻿#include "Function.h"
-
+#include <chrono>
+#include <thread>
 #undef main 
 
 int main(int argc, char* argv[])
@@ -13,10 +14,12 @@ int main(int argc, char* argv[])
     enemy_Object enemy;
     vector <bullet_Object> a;
     vector <enemy_Object> e;
-
+    enemy_Object enemy_temp;
+    srand(time(NULL));
     for (int i = 0; i < 5; i++)
     {
-        enemy_Object enemy_temp;
+        enemy_temp.SetX((rand() % SCREEN_WIDTH) / 2 + SCREEN_WIDTH);
+        enemy_temp.SetY(rand() % (SCREEN_HEIGHT - 175));
         e.push_back(enemy_temp);
     }
     for (int i = 0; i < e.size(); i++)
@@ -25,6 +28,8 @@ int main(int argc, char* argv[])
         return 0;
 
     plane.SetImage(plane.SplitBackground(plane.GetImage()));
+
+    //ApplySurface(plane.GetImage(), screen, 0, 0);
 
     // Load các frame ảnh vào một mảng
     SDL_Surface* frames[NUM_FRAMES] = { NULL };
@@ -65,7 +70,6 @@ int main(int argc, char* argv[])
                 a = plane.GetBullet();
                 a.push_back(bullet);
                 plane.SetBullet(a);
-
             }
             plane.Action(event);
         }
@@ -86,10 +90,9 @@ int main(int argc, char* argv[])
             for (int i = 0; i < e.size(); i++)
                 if (!(e[i].GetX() == -1 && e[i].GetY() == -1))
                     ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
-                else e.erase(e.begin() + i);
-            
-            for (int i = 0; i < e.size(); i++)
-                if (!(e[i].GetX() == -1 && e[i].GetY() == -1))
+
+            for (int i = 0; i < 5; i++)
+                if (e[i].GetX() != -1 && e[i].GetY() != -1)
                     e[i].Destroy(b);
 
             plane.SetBullet(b);*/
@@ -107,14 +110,12 @@ int main(int argc, char* argv[])
             // Cập nhật thời gian cuối cùng
             lastFrameTime = currentTime;
         }
-        
+
         a.clear();
-       
+
         // Cập nhật màn hình
         if (SDL_Flip(screen) == -1)
             return 0;
-
-     
     }
 
     // Giải phóng bộ nhớ
