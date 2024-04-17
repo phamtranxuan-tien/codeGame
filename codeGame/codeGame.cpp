@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
             }
             if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
             {
-                if (plane.GetBullet().size()<Sum_of_Bullet)
+                if (plane.GetBullet().size() < Sum_of_Bullet)
                 {
                     bullet.Create_bullet(plane.GetX() + 245, plane.GetY() + 96, "fire_01.png");
                     bullet.SetShoot();
@@ -87,13 +87,11 @@ int main(int argc, char* argv[])
             // Vẽ hình ảnh của plane và enemy lên màn hình
             ApplySurface(frames[currentFrame], screen, 0, 0);
             ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
-            for (int i=0;i<e.size();i++)
+            for (int i = 0; i < e.size(); i++)
                 ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
             vector <bullet_Object> b = plane.GetBullet();
 
-            vector <bullet_Object> b = plane.GetBullet();
-
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < e.size(); i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
                     ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
 
@@ -111,7 +109,7 @@ int main(int argc, char* argv[])
             plane.Shoot();
             plane.Crush(e);
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < e.size(); i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
                     e[i].Move();
             // Cập nhật màn hình
