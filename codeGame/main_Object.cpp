@@ -77,7 +77,7 @@ void main_Object::Shoot()
     for (int i = 0; i < bullets.size(); ++i)
     {
         ApplySurface(bullets[i].GetImage(), screen, bullets[i].GetX(), bullets[i].GetY());
-        bullets[i].Move();
+        bullets[i].Move(0);
         if (bullets[i].GetX() >= SCREEN_WIDTH)
             bullets.erase(bullets.begin() + i);
     }

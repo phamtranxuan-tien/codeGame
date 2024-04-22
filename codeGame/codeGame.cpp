@@ -109,7 +109,12 @@ int main(int argc, char* argv[])
 
             for (int i = 0; i < e.size(); i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                {
+                    if (e[i].GetX() <= SCREEN_WIDTH)
+                        e[i].Shoot();
                     e[i].Move();
+                }
+                   
             // Cập nhật màn hình
             SDL_Flip(screen);
 
