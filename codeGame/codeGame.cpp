@@ -1,4 +1,4 @@
-#include "Function.h"
+﻿#include "Function.h"
 #include <chrono>
 #include <thread>
 #undef main 
@@ -13,18 +13,18 @@ int main(int argc, char* argv[])
     bullet_Object bullet;
     enemy_Object enemy;
     vector <bullet_Object> a;
-    vector<enemy_Object> e;
+    vector <enemy_Object> e;
     enemy_Object enemy_temp;
-    bullet_Object bulletenemy;
-
     srand(time(NULL));
-    for (int i = 0; i < 5; i++)
+
+    for (int i = 0; i < Sum_of_Enemy; i++)
     {
-        enemy_temp.SetX((rand() % SCREEN_WIDTH) / 5 + SCREEN_WIDTH);
-        enemy_temp.SetY(rand() % SCREEN_HEIGHT);
+        enemy_temp.SetX((rand() % SCREEN_WIDTH) / 2 + SCREEN_WIDTH);
+        enemy_temp.SetY(rand() % (SCREEN_HEIGHT - 175));
         e.push_back(enemy_temp);
     }
-
+    for (int i = 0; i < e.size(); i++)
+        cout << e[i].GetY() << " ";
     if (plane.GetImage() == NULL)
         return 0;
 
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
         }
         frames[i] = resizeImage(frames[i], SCREEN_WIDTH, SCREEN_HEIGHT);
     }
-    
+
     int currentFrame = 0;
     Uint32 lastFrameTime = 0;
     Uint32 currentTime;
@@ -66,11 +66,14 @@ int main(int argc, char* argv[])
             }
             if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
             {
-                bullet.Create_bullet(plane.GetX() + 170, plane.GetY() + 120, "fire_01.png");
-                bullet.SetShoot();
-                a = plane.GetBullet();
-                a.push_back(bullet);
-                plane.SetBullet(a);
+                if (plane.GetBullet().size() < Sum_of_Bullet)
+                {
+                    bullet.Create_bullet(plane.GetX() + 44, plane.GetY() + 110, "fire_01.png");
+                    bullet.SetShoot();
+                    a = plane.GetBullet();
+                    a.push_back(bullet);
+                    plane.SetBullet(a);
+                }
             }
             plane.Action(event);
         }
@@ -84,45 +87,38 @@ int main(int argc, char* argv[])
             // Vẽ hình ảnh của plane và enemy lên màn hình
             ApplySurface(frames[currentFrame], screen, 0, 0);
             ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
-
+            for (int i = 0; i < e.size(); i++)
+                ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
             vector <bullet_Object> b = plane.GetBullet();
 
-            std::vector<Uint32> enemyCooldowns(5, 0); // Assuming there are 5 enemies, initialize all to 0
-
-            // Inside the main game loop
-            for (int i = 0; i < 5; i++) {
-                if (e[i].GetX() != -1 && e[i].GetY() != -1) {
+            for (int i = 0; i < e.size(); i++)
+                if (e[i].GetX() != -1 && e[i].GetY() != -1)
                     ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
 
-                    // Decrement the cooldown timer for this enemy
-                    if (enemyCooldowns[i] > 0) {
-                        enemyCooldowns[i]--;
-                    }
+   
 
-                    // Check if the enemy is ready to shoot
-                    if (enemyCooldowns[i] == 0) {
-                        vector <bullet_Object> be;
-                        bulletenemy.Create_bullet(e[i].GetX(), e[i].GetY(), "fire_01.png");
-                        be.push_back(bulletenemy);
-                        // Set the cooldown timer to the desired value (e.g., 100 frames)
-                        //e[i].EnemyShoot();
-                        enemyCooldowns[i] = 1; // Adjust as needed';
-                    }
-                    
-                }
-            }
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < e.size(); i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                {
                     e[i].Destroy(b);
-            plane.Die(e);
+                    if (e[i].GetX() == -1 && e[i].GetY() == -1)
+                        e.erase(e.begin() + i);
+                }
+              
 
             plane.SetBullet(b);
             plane.Move();
             plane.Shoot();
+            plane.Crush(e);
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < e.size(); i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                {
+                    if (e[i].GetX() <= SCREEN_WIDTH)
+                        e[i].Shoot();
                     e[i].Move();
+                }
+                   
             // Cập nhật màn hình
             SDL_Flip(screen);
 
@@ -142,7 +138,9 @@ int main(int argc, char* argv[])
 
     // Giải phóng bộ nhớ
     for (int i = 0; i < NUM_FRAMES; ++i)
+    {
         SDL_FreeSurface(frames[i]);
+    }
     CleanUp(g);
     SDL_Quit();
     return 1;

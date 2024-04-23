@@ -8,7 +8,7 @@ using namespace std;
 class base_Object
 {
 protected:
-	float x, y;
+	int x, y;
 	SDL_Surface* image;
 public:
 	base_Object();

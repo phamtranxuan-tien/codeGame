@@ -2,22 +2,19 @@
 
 enemy_Object::enemy_Object()
 {
-	srand(time(NULL));
-	x = SCREEN_WIDTH;
-	y = rand() % SCREEN_HEIGHT;
 	image = SplitBackground(LoadImage("Enemy_05.png"));
 }
 
 void enemy_Object::Move()
 {
 	if (x > 0)
-		x = x - 10;
+		x = x - 5;
 }
 
 void enemy_Object::Destroy(vector <bullet_Object>& a)
 {
 	for (int i = 0; i < a.size(); i++)
-		if (a[i].GetX() >= this->GetX() - 30 && a[i].GetY() + 5 <= this->GetY() + 132 && a[i].GetY() + 5 >= this->GetY() + 40)
+		if (a[i].GetX() >= this->GetX() + 30 && a[i].GetY() + 5 <= this->GetY() + 132 && a[i].GetY() + 5 >= this->GetY() + 40)
 		{
 			x = -1;
 			y = -1;
@@ -26,14 +23,31 @@ void enemy_Object::Destroy(vector <bullet_Object>& a)
 		}
 }
 
-void enemy_Object::EnemyShoot()
+vector<bullet_Object> enemy_Object::GetBullet()
 {
-	for (int i = 0; i < 100; ++i)
-	{
-		ApplySurface(bullets[i].GetImage(), screen, bullets[i].GetX(), bullets[i].GetY());
-		bullets[i].MoveEnemy();
-		if (bullets[i].GetX() <= 25)
-			bullets.erase(bullets.begin() + i);
+	return bullets;
+}
 
+void enemy_Object::SetBullet(vector <bullet_Object> v)
+{
+	bullets = v;
+}
+
+void enemy_Object::Shoot()
+{
+	bullet_Object bullet;
+	if (bullets.empty() || x - bullets[bullets.size() - 1].GetX()  == 500)
+	{
+		bullet.Create_bullet(x, y, "fire_enemy_02.png");
+		bullets.push_back(bullet);
 	}
+	for (int i = 0; i < bullets.size(); ++i)
+	{
+		if (GetX() > 0)
+			ApplySurface(bullets[i].GetImage(), screen, bullets[i].GetX(), bullets[i].GetY());
+		bullets[i].Move(1);
+	}
+	for (int i = 0; i < bullets.size(); ++i)
+		if (bullets[i].GetX() <= 0 && bullets.size() > 1)
+			bullets.erase(bullets.begin() + i);
 }

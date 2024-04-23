@@ -12,8 +12,7 @@ private:
 public:
 	void Create_bullet(int,int,string);
 	~bullet_Object();
-	void Move();
-	void MoveEnemy();
+	void Move(int);
 	void SetShoot();
 	bool GetShoot();
 };
