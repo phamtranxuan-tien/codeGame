@@ -20,7 +20,8 @@ const int SCREEN_HEIGHT = 700;
 const int SCREEN_BPP = 32;
 const int NUM_FRAMES = 8;
 const int FRAME_DELAY = 50; // milliseconds
-const int Sum_of_Enemy = 10;
+//const int Sum_of_Enemy = 10;
+const int Sum_of_Enemy = 2;
 const int Sum_of_Bullet = 5;
 const int Sum_of_Enemy_Bullet = 1;
 
