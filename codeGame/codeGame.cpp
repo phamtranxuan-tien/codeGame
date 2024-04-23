@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
             {
                 if (plane.GetBullet().size() < Sum_of_Bullet)
                 {
-                    bullet.Create_bullet(plane.GetX() + 145, plane.GetY() + 62, "fire_enemy_02.png");
+                    bullet.Create_bullet(plane.GetX() + 175, plane.GetY() + 111, "fire_enemy_02.png");
                     bullet.SetShoot();
                     a = plane.GetBullet();
                     a.push_back(bullet);

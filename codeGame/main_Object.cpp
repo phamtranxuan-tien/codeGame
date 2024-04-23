@@ -114,7 +114,7 @@ void main_Object::Crush(vector <bullet_Object>& b)
 
         // Than may bay cai tien
         else if (this->GetX() + 90 < b[i].GetX() + 0.5 &&
-            this->GetX() + 90 + (170 - 90) > b[i].GetX() &&
+            this->GetX() + 90 + (175 - 90) > b[i].GetX() &&
             this->GetY() + 80 < b[i].GetY() + 4 &&
             this->GetY() + 80 + (111 - 80) > b[i].GetY())
         {
@@ -135,8 +135,8 @@ void main_Object::Crush(vector <bullet_Object>& b)
         // Mui may bay cai tien
         else if (this->GetX() + 170 < b[i].GetX() + 0.5 &&
             this->GetX() + 170 + (235 - 170) > b[i].GetX() &&
-            this->GetY() + 80 < b[i].GetY() + 4 &&
-            this->GetY() + 80 + (111 - 80) > b[i].GetY())
+            this->GetY() + 90 < b[i].GetY() + 4 &&
+            this->GetY() + 90 + (105 - 90) > b[i].GetY())
         {
             this->Damge();
             b.erase(b.begin() + i);
