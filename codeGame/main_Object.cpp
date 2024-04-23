@@ -5,6 +5,8 @@ main_Object::main_Object()
 	x = 100;
 	y = 100;
     image = LoadImage("Mine_03.png");
+    //image = LoadImage("fire_enemy_02.png");
+    //image = resizeImage(image, 30, 10);
 }
 
 main_Object::~main_Object()
@@ -100,52 +102,82 @@ void main_Object::Crush(vector <bullet_Object>& b)
     for (int i = 0; i < b.size(); i++)
     {
         // Dau may bay cai tien
-        if (this->GetX() + 35 < b[i].GetX() + 105 + 60 &&
-            this->GetX() + 35 + (170 - 90) > b[i].GetX() + 105 &&
-            this->GetY() + 62 < b[i].GetY() + 105 + 10 &&
-            this->GetY() + 62 + (80 - 62) > b[i].GetY() + 105)
+        if (this->GetX() + 35 < b[i].GetX() + 0.5 &&
+            this->GetX() + 35 + (145 - 35) > b[i].GetX()&&
+            this->GetY() + 62 < b[i].GetY() + 4 &&
+            this->GetY() + 62 + (80 - 62) > b[i].GetY())
         {
             this->Damge();
             b[i].SetX(-100);
             b[i].SetY(-100);
         }
 
-        // Duoi may bay cai tien
-        else if (this->GetX() + 25 < b[i].GetX() + 105 + 60 &&
-            this->GetX() + 25 + 30 > b[i].GetX() + 105 &&
-            this->GetY() + 40 < b[i].GetY() + 105 + 10 &&
-            this->GetY() + 40 + (62 - 40) > b[i].GetY() + 105)
+        // Than may bay cai tien
+        else if (this->GetX() + 90 < b[i].GetX() + 0.5 &&
+            this->GetX() + 90 + (175 - 90) > b[i].GetX() &&
+            this->GetY() + 80 < b[i].GetY() + 4 &&
+            this->GetY() + 80 + (111 - 80) > b[i].GetY())
         {
             this->Damge();
             b.erase(b.begin() + i);
         }
 
-        // Dit may bay cai tien
-        else if (this->GetX() + 44 < b[i].GetX() + 158 + 170 - 158 &&
-            this->GetX() + 44 + 90 - 44 > b[i].GetX() + 105 &&
-            this->GetY() + 80 < b[i].GetY() + 40 + (115 - 40) &&
-            this->GetY() + 80 + (110 - 80) > b[i].GetY() + 40)
+        // Duoi may bay cai tien
+        else if (this->GetX() + 25 < b[i].GetX() + 0.5 &&
+            this->GetX() + 25 + 30 > b[i].GetX()&&
+            this->GetY() + 40 < b[i].GetY() + 4 &&
+            this->GetY() + 40 + (62 - 40) > b[i].GetY())
         {
             this->Damge();
-            b[i].SetX(-100);
-            b[i].SetY(-100);
+            b.erase(b.begin() + i);
         }
 
-        // Mui may bay
-        else if (this->GetX() + 245 >= b[i].GetX() + 75 && this->GetX() + 245 <= b[i].GetX() + 75 + (245 - 175) && this->GetY() + 111 >= b[i].GetY() + 56 && this->GetY() + 111 <= b[i].GetY() + 125)
+        // Mui may bay cai tien
+        else if (this->GetX() + 170 < b[i].GetX() + 0.5 &&
+            this->GetX() + 170 + (235 - 170) > b[i].GetX() &&
+            this->GetY() + 90 < b[i].GetY() + 4 &&
+            this->GetY() + 90 + (105 - 90) > b[i].GetY())
         {
             this->Damge();
-            b[i].SetX(-100);
-            b[i].SetY(-100);
+            b.erase(b.begin() + i);
         }
 
-        // Sung may bay
-        else if (this->GetX() + 133 >= b[i].GetX() + 100 && this->GetX() + 133 <= b[i].GetX() + 100 + (133 - 80) && this->GetY() + 127 >= b[i].GetY() + 40 && this->GetY() + 127 <= b[i].GetY() + 40 + (127 - 111))
+        // Sung may bay cai tien
+        else if (this->GetX() + 75 < b[i].GetX() + 0.5 &&
+            this->GetX() + 75 + (133 - 75) > b[i].GetX() &&
+            this->GetY() + 111 < b[i].GetY() + 4 &&
+            this->GetY() + 111 + (127 - 111) > b[i].GetY())
         {
             this->Damge();
-            b[i].SetX(-100);
-            b[i].SetY(-100);
+            b.erase(b.begin() + i);
         }
+
+        //// Dit may bay cai tien
+        //else if (this->GetX() + 44 < b[i].GetX() + 158 + 170 - 158 &&
+        //    this->GetX() + 44 + 90 - 44 > b[i].GetX() + 105 &&
+        //    this->GetY() + 80 < b[i].GetY() + 40 + (115 - 40) &&
+        //    this->GetY() + 80 + (110 - 80) > b[i].GetY() + 40)
+        //{
+        //    this->Damge();
+        //    b[i].SetX(-100);
+        //    b[i].SetY(-100);
+        //}
+
+        //// Mui may bay
+        //else if (this->GetX() + 245 >= b[i].GetX() && this->GetX() + 245 <= b[i].GetX() + 0.5 && this->GetY() + 111 >= b[i].GetY() && this->GetY() + 111 <= b[i].GetY() + 4)
+        //{
+        //    this->Damge();
+        //    b[i].SetX(-100);
+        //    b[i].SetY(-100);
+        //}
+
+        //// Sung may bay
+        //else if (this->GetX() + 133 >= b[i].GetX() && this->GetX() + 133 <= b[i].GetX() + 0.5 && this->GetY() + 127 >= b[i].GetY() && this->GetY() + 127 <= b[i].GetY() + 4)
+        //{
+        //    this->Damge();
+        //    b[i].SetX(-100);
+        //    b[i].SetY(-100);
+        //}
     }
 }
 
