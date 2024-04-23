@@ -204,7 +204,7 @@ void main_Object::Crush(vector <enemy_Object>& e)
         else if (this->GetX() + 133 >= e[i].GetX() + 100 && this->GetX() + 133 <= e[i].GetX() + 100 + (133 - 80) && this->GetY() + 127 >= e[i].GetY() + 40 && this->GetY() + 127 <= e[i].GetY() + 40 + (127 - 111))
         {
             this->Damge();
-            e[i].SetX(-200);
+            e[i].SetX(-200); 
             e[i].SetY(-200);
         }
         vector <bullet_Object> temp = e[i].GetBullet();

@@ -45,7 +45,7 @@ void enemy_Object::Shoot()
 	}
 	for (int i = 0; i < bullets.size(); ++i)
 	{
-		if (GetX() > 0)
+		if (bullets[i].GetX() > 0)
 			ApplySurface(bullets[i].GetImage(), screen, bullets[i].GetX(), bullets[i].GetY());
 		bullets[i].Move(1);
 	}
