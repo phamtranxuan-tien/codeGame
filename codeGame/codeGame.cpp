@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
             {
                 if (plane.GetBullet().size() < Sum_of_Bullet)
                 {
-                    bullet.Create_bullet(plane.GetX() + 170, plane.GetY() + 120, "fire_01.png");
+                    bullet.Create_bullet(plane.GetX() + 44, plane.GetY() + 110, "fire_01.png");
                     bullet.SetShoot();
                     a = plane.GetBullet();
                     a.push_back(bullet);
@@ -95,12 +95,7 @@ int main(int argc, char* argv[])
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
                     ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
 
-            for (int i = 0; i < e.size(); i++)
-            {
-                b = e[i].GetBullet();
-                if (!b.empty())
-                    e[i].Shooting();
-            }
+   
 
             for (int i = 0; i < e.size(); i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
@@ -118,7 +113,12 @@ int main(int argc, char* argv[])
 
             for (int i = 0; i < e.size(); i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                {
+                    if (e[i].GetX() <= SCREEN_WIDTH)
+                        e[i].Shoot();
                     e[i].Move();
+                }
+                   
             // Cập nhật màn hình
             SDL_Flip(screen);
 
