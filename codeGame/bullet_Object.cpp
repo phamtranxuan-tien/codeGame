@@ -8,6 +8,8 @@ void bullet_Object::Create_bullet(int xx, int yy, string filename)
 	image = SplitBackground(resizeImage(image, 30, 10));
 }
 
+
+
 bullet_Object::~bullet_Object()
 {
 	return;

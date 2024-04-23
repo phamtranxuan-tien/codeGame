@@ -1,8 +1,5 @@
 ﻿#pragma once
 #include <iostream>
-#include <iomanip>
-#include <cstdlib> // for rand() and srand()
-#include <ctime>
 #include <SDL.h>
 #include <string>
 #include <SDL_image.h>
@@ -25,6 +22,7 @@ const int NUM_FRAMES = 8;
 const int FRAME_DELAY = 50; // milliseconds
 const int Sum_of_Enemy = 10;
 const int Sum_of_Bullet = 5;
+const int Sum_of_Enemy_Bullet = 1;
 
 //Khai bao bien toan cuc
 extern SDL_Surface* screen;

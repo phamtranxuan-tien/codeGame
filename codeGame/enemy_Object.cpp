@@ -23,3 +23,29 @@ void enemy_Object::Destroy(vector <bullet_Object>& a)
 			return;
 		}
 }
+
+vector<bullet_Object> enemy_Object::GetBullet()
+{
+	return bullets;
+}
+
+void enemy_Object::SetBullet(vector <bullet_Object> v)
+{
+	bullets = v;
+}
+
+void enemy_Object::Shoot()
+{
+	for (int i = 0; i < bullets.size(); ++i)
+	{
+		ApplySurface(bullets[i].GetImage(), screen, bullets[i].GetX(), bullets[i].GetY());
+		bullets[i].Move();
+		if (bullets[i].GetX() >= SCREEN_WIDTH)
+			bullets.erase(bullets.begin() + i);
+	}
+}
+void enemy_Object::Shooting()
+{
+	vector <bullet_Object> b;
+
+}
