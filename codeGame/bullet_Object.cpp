@@ -30,12 +30,6 @@ void bullet_Object::Move(int dir)
 	}
 }
 
-void bullet_Object::MoveEnemy()
-{
-	if (x > 0)
-		x = x - 1;
-}
-
 void bullet_Object::SetShoot()
 {
 	Shoot = true;
