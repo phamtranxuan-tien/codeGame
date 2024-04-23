@@ -5,6 +5,8 @@ main_Object::main_Object()
 	x = 100;
 	y = 100;
     image = LoadImage("Mine_03.png");
+    //image = LoadImage("fire_enemy_02.png");
+    //image = resizeImage(image, 30, 10);
 }
 
 main_Object::~main_Object()
@@ -77,13 +79,109 @@ void main_Object::Shoot()
     for (int i = 0; i < bullets.size(); ++i)
     {
         ApplySurface(bullets[i].GetImage(), screen, bullets[i].GetX(), bullets[i].GetY());
-        bullets[i].Move();
+        bullets[i].Move(0);
         if (bullets[i].GetX() >= SCREEN_WIDTH)
             bullets.erase(bullets.begin() + i);
     }
 }
 
-void main_Object::Crush(vector <enemy_Object> e)
+void main_Object::Damge()
+{
+    if (HP == 0)
+    {
+        x = -300;
+        y = -300;
+    }
+    else
+        HP--;
+}
+
+
+void main_Object::Crush(vector <bullet_Object>& b)
+{
+    for (int i = 0; i < b.size(); i++)
+    {
+        // Dau may bay cai tien
+        if (this->GetX() + 35 < b[i].GetX() + 0.5 &&
+            this->GetX() + 35 + (145 - 35) > b[i].GetX()&&
+            this->GetY() + 62 < b[i].GetY() + 4 &&
+            this->GetY() + 62 + (80 - 62) > b[i].GetY())
+        {
+            this->Damge();
+            b[i].SetX(-100);
+            b[i].SetY(-100);
+        }
+
+        // Than may bay cai tien
+        else if (this->GetX() + 90 < b[i].GetX() + 0.5 &&
+            this->GetX() + 90 + (170 - 90) > b[i].GetX() &&
+            this->GetY() + 80 < b[i].GetY() + 4 &&
+            this->GetY() + 80 + (111 - 80) > b[i].GetY())
+        {
+            this->Damge();
+            b.erase(b.begin() + i);
+        }
+
+        // Duoi may bay cai tien
+        else if (this->GetX() + 25 < b[i].GetX() + 0.5 &&
+            this->GetX() + 25 + 30 > b[i].GetX()&&
+            this->GetY() + 40 < b[i].GetY() + 4 &&
+            this->GetY() + 40 + (62 - 40) > b[i].GetY())
+        {
+            this->Damge();
+            b.erase(b.begin() + i);
+        }
+
+        // Mui may bay cai tien
+        else if (this->GetX() + 170 < b[i].GetX() + 0.5 &&
+            this->GetX() + 170 + (235 - 170) > b[i].GetX() &&
+            this->GetY() + 80 < b[i].GetY() + 4 &&
+            this->GetY() + 80 + (111 - 80) > b[i].GetY())
+        {
+            this->Damge();
+            b.erase(b.begin() + i);
+        }
+
+        // Sung may bay cai tien
+        else if (this->GetX() + 75 < b[i].GetX() + 0.5 &&
+            this->GetX() + 75 + (133 - 75) > b[i].GetX() &&
+            this->GetY() + 111 < b[i].GetY() + 4 &&
+            this->GetY() + 111 + (127 - 111) > b[i].GetY())
+        {
+            this->Damge();
+            b.erase(b.begin() + i);
+        }
+
+        //// Dit may bay cai tien
+        //else if (this->GetX() + 44 < b[i].GetX() + 158 + 170 - 158 &&
+        //    this->GetX() + 44 + 90 - 44 > b[i].GetX() + 105 &&
+        //    this->GetY() + 80 < b[i].GetY() + 40 + (115 - 40) &&
+        //    this->GetY() + 80 + (110 - 80) > b[i].GetY() + 40)
+        //{
+        //    this->Damge();
+        //    b[i].SetX(-100);
+        //    b[i].SetY(-100);
+        //}
+
+        //// Mui may bay
+        //else if (this->GetX() + 245 >= b[i].GetX() && this->GetX() + 245 <= b[i].GetX() + 0.5 && this->GetY() + 111 >= b[i].GetY() && this->GetY() + 111 <= b[i].GetY() + 4)
+        //{
+        //    this->Damge();
+        //    b[i].SetX(-100);
+        //    b[i].SetY(-100);
+        //}
+
+        //// Sung may bay
+        //else if (this->GetX() + 133 >= b[i].GetX() && this->GetX() + 133 <= b[i].GetX() + 0.5 && this->GetY() + 127 >= b[i].GetY() && this->GetY() + 127 <= b[i].GetY() + 4)
+        //{
+        //    this->Damge();
+        //    b[i].SetX(-100);
+        //    b[i].SetY(-100);
+        //}
+    }
+}
+
+void main_Object::Crush(vector <enemy_Object>& e)
 {
     for (int i = 0; i < e.size(); ++i)
     {
@@ -99,8 +197,9 @@ void main_Object::Crush(vector <enemy_Object> e)
             this->GetY() + 62 < e[i].GetY() + 105 + 10 &&
             this->GetY() + 62 + (80 - 62) > e[i].GetY() + 105)
         {
-            this->SetX(-300);
-            this->SetY(-300);
+            this->Damge();
+            e[i].SetX(-200);
+            e[i].SetY(-200);
         }
 
         // Duoi may bay cai tien
@@ -109,8 +208,9 @@ void main_Object::Crush(vector <enemy_Object> e)
             this->GetY() + 40 < e[i].GetY() + 105 + 10 &&
             this->GetY() + 40 + (62 - 40) > e[i].GetY() + 105)
         {
-            this->SetX(-300);
-            this->SetY(-300);
+            this->Damge();
+            e[i].SetX(-200);
+            e[i].SetY(-200);
         }
 
         // Dit may bay cai tien
@@ -119,22 +219,28 @@ void main_Object::Crush(vector <enemy_Object> e)
             this->GetY() + 80 < e[i].GetY() + 40 + (115 - 40) &&
             this->GetY() + 80 + (110 - 80) > e[i].GetY() + 40)
         {
-            this->SetX(-300);
-            this->SetY(-300);
+            this->Damge();
+            e[i].SetX(-200);
+            e[i].SetY(-200);
         }
 
         // Mui may bay
         else if (this->GetX() + 245 >= e[i].GetX() + 75 && this->GetX() + 245 <= e[i].GetX() + 75 + (245 - 175) && this->GetY() + 111 >= e[i].GetY() + 56 && this->GetY() + 111 <= e[i].GetY() + 125)
         {
-            this->SetX(-300);
-            this->SetY(-300);
+            this->Damge();
+            e[i].SetX(-200);
+            e[i].SetY(-200);
         }
 
         // Sung may bay
         else if (this->GetX() + 133 >= e[i].GetX() + 100 && this->GetX() + 133 <= e[i].GetX() + 100 + (133 - 80) && this->GetY() + 127 >= e[i].GetY() + 40 && this->GetY() + 127 <= e[i].GetY() + 40 + (127 - 111))
         {
-            this->SetX(-300);
-            this->SetY(-300);
+            this->Damge();
+            e[i].SetX(-200);
+            e[i].SetY(-200);
         }
+        vector <bullet_Object> temp = e[i].GetBullet();
+        this->Crush(temp);
+        e[i].SetBullet(temp);
     }
 }

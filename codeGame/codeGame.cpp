@@ -23,7 +23,8 @@ int main(int argc, char* argv[])
         enemy_temp.SetY(rand() % (SCREEN_HEIGHT - 175));
         e.push_back(enemy_temp);
     }
-
+    for (int i = 0; i < e.size(); i++)
+        cout << e[i].GetY() << " ";
     if (plane.GetImage() == NULL)
         return 0;
 
@@ -44,7 +45,7 @@ int main(int argc, char* argv[])
         }
         frames[i] = resizeImage(frames[i], SCREEN_WIDTH, SCREEN_HEIGHT);
     }
-    
+
     int currentFrame = 0;
     Uint32 lastFrameTime = 0;
     Uint32 currentTime;
@@ -65,9 +66,9 @@ int main(int argc, char* argv[])
             }
             if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
             {
-                if (plane.GetBullet().size()<Sum_of_Bullet)
+                if (plane.GetBullet().size() < Sum_of_Bullet)
                 {
-                    bullet.Create_bullet(plane.GetX() + 44, plane.GetY() + 110, "fire_01.png");
+                    bullet.Create_bullet(plane.GetX() + 145, plane.GetY() + 62, "fire_enemy_02.png");
                     bullet.SetShoot();
                     a = plane.GetBullet();
                     a.push_back(bullet);
@@ -86,12 +87,15 @@ int main(int argc, char* argv[])
             // Vẽ hình ảnh của plane và enemy lên màn hình
             ApplySurface(frames[currentFrame], screen, 0, 0);
             ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
-
+            for (int i = 0; i < e.size(); i++)
+                ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
             vector <bullet_Object> b = plane.GetBullet();
 
             for (int i = 0; i < e.size(); i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
                     ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
+
+   
 
             for (int i = 0; i < e.size(); i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
@@ -109,7 +113,12 @@ int main(int argc, char* argv[])
 
             for (int i = 0; i < e.size(); i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                {
+                    if (e[i].GetX() <= SCREEN_WIDTH)
+                        e[i].Shoot();
                     e[i].Move();
+                }
+                   
             // Cập nhật màn hình
             SDL_Flip(screen);
 
