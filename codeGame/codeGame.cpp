@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
     vector <enemy_Object> e;
     enemy_Object enemy_temp;
     SDL_Surface* menu = NULL;
+    Mix_Chunk* sound1, * sound2;
 
     //Khoi tao am thanh
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
@@ -78,7 +79,7 @@ int main(int argc, char* argv[])
                 is_quit = true; // Thoat neu nhan phim ESC
                 break;
             }
-            else if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN)||Play ==true)
+            else if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) || Play == true)
             {
                 Play = true;
                 if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
@@ -90,9 +91,9 @@ int main(int argc, char* argv[])
                         a = plane.GetBullet();
                         a.push_back(bullet);
                         plane.SetBullet(a);
-                        Mix_Chunk* beep_sound = Mix_LoadWAV("ting.wav");
-                        if (beep_sound != NULL)
-                            Mix_PlayChannel(-1, beep_sound, 0);
+                        sound1 = Mix_LoadWAV("shot.wav");
+                        if (sound1 != NULL)
+                            Mix_PlayChannel(-1, sound1, 0);
                     }
                 }
                 plane.Action(event);
@@ -100,9 +101,18 @@ int main(int argc, char* argv[])
             }
         }
         if (Play == false)
+        {
             ApplySurface(menu, screen, 0, 0);
+            sound2 = Mix_LoadWAV("menu.wav");
+            if (sound2 != NULL)
+                Mix_PlayChannel(-1, sound2, 0);
+            /*sound1 = Mix_LoadWAV("shot.wav");
+            if (sound1 != NULL)
+                Mix_PlayChannel(-1, sound1, 0);*/
+        }
         else
         {
+            //Mix_HaltChannel(-1);
             Uint32 currentTime = SDL_GetTicks();
 
             // Kiểm tra thời gian giữa các frame
