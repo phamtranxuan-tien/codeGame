@@ -7,12 +7,14 @@
 #include <string>
 #include <SDL_image.h>
 #include <vector>
+#include "Heart_Object.h"
+
 using namespace std;
 
 class main_Object:public base_Object
 {
 private:
-	int HP = 3;
+	vector <Heart_Object> Mau;
 	vector <bullet_Object> bullets;
 public:
 	main_Object();
@@ -25,4 +27,12 @@ public:
 	void Crush(vector <enemy_Object>&);
 	void Crush(vector <bullet_Object>&);
 	void Damage();
+	void DamageEnemy(vector <enemy_Object>);
+
+	vector <Heart_Object> GetMau();
+	void SetMau(vector <Heart_Object>);
+	void CreateMau();
+	void DestroyMau();
+	void DrawMau();
 };
+
