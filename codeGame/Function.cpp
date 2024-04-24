@@ -2,6 +2,7 @@
 
 SDL_Surface* screen = NULL;
 SDL_Event event = {};
+bool Play = false;
 
 //Ve anh len man hinh
 void ApplySurface(SDL_Surface* src, SDL_Surface* des, int x, int y)

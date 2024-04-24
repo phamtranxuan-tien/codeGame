@@ -27,6 +27,7 @@ const int Sum_of_Enemy_Bullet = 1;
 //Khai bao bien toan cuc
 extern SDL_Surface* screen;
 extern SDL_Event event;
+extern bool Play;
 
 //Khai bao cac ham
 bool Init();
