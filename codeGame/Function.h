@@ -8,6 +8,7 @@
 #include "main_Object.h"
 #include "bullet_Object.h"
 #include "enemy_Object.h"
+#include "Heart_Object.h"
 
 using namespace std;
 
@@ -23,6 +24,7 @@ const int FRAME_DELAY = 50; // milliseconds
 const int Sum_of_Enemy = 10;
 const int Sum_of_Bullet = 5;
 const int Sum_of_Enemy_Bullet = 1;
+const int Sum_of_Heart = 3;
 
 //Khai bao bien toan cuc
 extern SDL_Surface* screen;

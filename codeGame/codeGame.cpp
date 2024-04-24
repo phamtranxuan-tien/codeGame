@@ -50,6 +50,8 @@ int main(int argc, char* argv[])
     Uint32 lastFrameTime = 0;
     Uint32 currentTime;
 
+    plane.CreateMau();
+
     while (!is_quit)
     {
         while (SDL_PollEvent(&event))
@@ -68,7 +70,7 @@ int main(int argc, char* argv[])
             {
                 if (plane.GetBullet().size() < Sum_of_Bullet)
                 {
-                    bullet.Create_bullet(plane.GetX() + 175, plane.GetY() + 111, "fire_enemy_02.png");
+                    bullet.Create_bullet(plane.GetX() + 175, plane.GetY() + 111, "fire_01.png");
                     bullet.SetShoot();
                     a = plane.GetBullet();
                     a.push_back(bullet);
@@ -105,7 +107,7 @@ int main(int argc, char* argv[])
                         e.erase(e.begin() + i);
                 }
               
-
+            plane.DrawMau();
             plane.SetBullet(b);
             plane.Move();
             plane.Shoot();

@@ -87,13 +87,15 @@ void main_Object::Shoot()
 
 void main_Object::Damge()
 {
-    if (HP == 0)
+    this->DestroyMau();
+    if (Mau[0].GetHP() == 0)
     {
         x = -300;
         y = -300;
+        return;
     }
-    else
-        HP--;
+    
+
 }
 
 
@@ -243,4 +245,46 @@ void main_Object::Crush(vector <enemy_Object>& e)
         this->Crush(temp);
         e[i].SetBullet(temp);
     }
+}
+
+vector <Heart_Object> main_Object::GetMau()
+{
+    return Mau;
+}
+
+void main_Object::SetMau(vector <Heart_Object> mau)
+{
+    Mau = mau;
+}
+
+void main_Object::CreateMau()
+{
+    int XMau = 1000;
+    int YMau = 10;
+    for (int i = 0; i < Sum_of_Heart; i++)
+    {   
+        Heart_Object temp;
+        temp.CreateHeart(XMau, YMau, "fire_enemy_02.png");
+        Mau.push_back(temp);
+        XMau += 60;
+    }
+}
+
+void main_Object::DestroyMau()
+{
+    for (int i = Sum_of_Heart - 1; i >= 0; i--)
+        if (Mau[i].GetHP() == 1)
+        {
+            SDL_Surface* img = LoadImage("fire_01.png");
+            img = SplitBackground(resizeImage(img, 50, 50));
+            Mau[i].SetImage(img);
+            Mau[i].SetHP(0);
+            return;
+        }
+}   
+
+void main_Object::DrawMau()
+{
+    for (int i = 0; i < Sum_of_Heart; i++)
+        ApplySurface(Mau[i].GetImage(), screen, Mau[i].GetX(), Mau[i].GetY());
 }
