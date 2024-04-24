@@ -62,6 +62,8 @@ int main(int argc, char* argv[])
     Uint32 lastFrameTime = 0;
     Uint32 currentTime;
 
+    plane.CreateMau();
+
     while (!is_quit)
     {
         while (SDL_PollEvent(&event))
@@ -121,19 +123,19 @@ int main(int argc, char* argv[])
 
 
 
-                for (int i = 0; i < e.size(); i++)
-                    if (e[i].GetX() != -1 && e[i].GetY() != -1)
-                    {
-                        e[i].Destroy(b);
-                        if (e[i].GetX() == -1 && e[i].GetY() == -1)
-                            e.erase(e.begin() + i);
-                    }
-
-
-                plane.SetBullet(b);
-                plane.Move();
-                plane.Shoot();
-                plane.Crush(e);
+            for (int i = 0; i < e.size(); i++)
+                if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                {
+                    e[i].Destroy(b);
+                    if (e[i].GetX() == -1 && e[i].GetY() == -1)
+                        e.erase(e.begin() + i);
+                }
+              
+            plane.DrawMau();
+            plane.SetBullet(b);
+            plane.Move();
+            plane.Shoot();
+            plane.Crush(e);
 
                 for (int i = 0; i < e.size(); i++)
                     if (e[i].GetX() != -1 && e[i].GetY() != -1)
