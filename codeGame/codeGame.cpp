@@ -82,6 +82,8 @@ int main(int argc, char* argv[])
             else if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) || Play == true)
             {
                 Play = true;
+                
+
                 if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
                 {
                     if (plane.GetBullet().size() < Sum_of_Bullet)
@@ -112,7 +114,11 @@ int main(int argc, char* argv[])
         }
         else
         {
-            //Mix_HaltChannel(-1);
+         //   Mix_HaltChannel(-1);
+
+            sound2 = Mix_LoadWAV("sound_background.wav");
+            if (sound2 != NULL)
+                Mix_PlayChannel(-1, sound2, 0);
             Uint32 currentTime = SDL_GetTicks();
 
             // Kiểm tra thời gian giữa các frame
