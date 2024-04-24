@@ -17,6 +17,17 @@ int main(int argc, char* argv[])
     enemy_Object enemy_temp;
     SDL_Surface* menu = NULL;
 
+    //Khoi tao am thanh
+    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+        std::cerr << "Failed to initialize SDL audio: " << SDL_GetError() << std::endl;
+        return 1;
+    }
+
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        std::cerr << "Failed to initialize SDL_mixer: " << Mix_GetError() << std::endl;
+        return 1;
+    }
+
     g.SetImage(g.LoadImage("Menu.png"));
     menu = g.GetImage();
     menu = resizeImage(menu, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -41,8 +52,7 @@ int main(int argc, char* argv[])
         enemy_temp.SetY(rand() % (SCREEN_HEIGHT - 175));
         e.push_back(enemy_temp);
     }
-    for (int i = 0; i < e.size(); i++)
-        cout << e[i].GetY() << " ";
+ 
     if (plane.GetImage() == NULL)
         return 0;
 
@@ -78,6 +88,9 @@ int main(int argc, char* argv[])
                         a = plane.GetBullet();
                         a.push_back(bullet);
                         plane.SetBullet(a);
+                        Mix_Chunk* beep_sound = Mix_LoadWAV("ting.wav");
+                        if (beep_sound != NULL)
+                            Mix_PlayChannel(-1, beep_sound, 0);
                     }
                 }
                 plane.Action(event);

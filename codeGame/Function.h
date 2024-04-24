@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <string>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <vector>
 #include "base_Object.h"
 #include "main_Object.h"
