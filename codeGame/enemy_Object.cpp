@@ -35,8 +35,6 @@ void enemy_Object::SetBullet(vector <bullet_Object> v)
 
 void enemy_Object::Shoot()
 {
-	/*bullets[0].Move(1);
-	ApplySurface(bullets[0].GetImage(), screen, bullets[0].GetX(), bullets[0].GetY());*/
 	bullet_Object bullet;
 	if (bullets.empty() || x - bullets[bullets.size() - 1].GetX()  == 500)
 	{
