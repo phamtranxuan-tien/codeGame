@@ -40,7 +40,7 @@ void enemy_Object::Shoot()
 	bullet_Object bullet;
 	if (bullets.empty() || x - bullets[bullets.size() - 1].GetX()  == 500)
 	{
-		bullet.Create_bullet(x, y, "fire_enemy_02.png");
+		bullet.Create_bullet(x+x/4, y+y/2, "fire_enemy_02.png");
 		bullets.push_back(bullet);
 	}
 	for (int i = 0; i < bullets.size(); ++i)
