@@ -53,18 +53,22 @@ int main(int argc, char* argv[])
     SDL_Surface* temp_enter = NULL;
     for (int i = 0; i < NUM_FRAMES_ENTER; ++i) {
         std::string filename;
-        if (i < 9)
-            filename = "Start_01_0" + std::to_string(i + 1) + ".png";
+        if (i < 1)
+            //filename = "Start_01_0" + std::to_string(i + 1) + ".png";
+            filename = "Start_01_01.png";
         else
-            filename = "Start_01_" + std::to_string(i + 1) + ".png";
+            //filename = "Start_01_" + std::to_string(i + 1) + ".png";
+            filename = "Start_01_02.png";
         g.SetImage(g.LoadImage(filename));
+        g.SetImage(resizeImage(g.GetImage(), 1010 / 2, 120 / 2));
         g.SetImage(g.SplitBackground(g.GetImage()));
         frames_enter[i] = g.GetImage();
         if (frames_enter[i] == nullptr) {
             std::cerr << "Failed to load frame " << filename << "!" << std::endl;
             return 1;
         }
-        //frames_enter[i] = resizeImage(frames_enter[i], SCREEN_WIDTH, SCREEN_HEIGHT);
+        //frames_enter[i] = resizeImage(frames_enter[i], 1010 / 2, 120 / 2);
+        //frames_enter[i] = SplitBackground(frames_enter[i]);
     }
 
     srand(time(NULL));
@@ -134,7 +138,7 @@ int main(int argc, char* argv[])
                 //SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
 
                 // Vẽ hình ảnh của plane và enemy lên màn hình
-                ApplySurface(frames_enter[currentFrame], screen, 0, 0);
+                ApplySurface(frames_enter[currentFrame], screen, SCREEN_WIDTH / 2 - 1010/4, 633);
                 // Cập nhật màn hình
                 SDL_Flip(screen);
 
