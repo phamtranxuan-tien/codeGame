@@ -26,7 +26,9 @@ public:
 	void Shoot();
 	void Crush(vector <enemy_Object>&);
 	void Crush(vector <bullet_Object>&);
-	void Damge();
+	void Damage();
+	void DamageEnemy(vector <enemy_Object>);
+
 	vector <Heart_Object> GetMau();
 	void SetMau(vector <Heart_Object>);
 	void CreateMau();

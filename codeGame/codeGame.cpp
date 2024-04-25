@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
     vector <enemy_Object> e;
     enemy_Object enemy_temp;
     SDL_Surface* menu = NULL;
+    Mix_Chunk* sound1, * sound2;
 
     //Khoi tao am thanh
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
@@ -31,6 +32,7 @@ int main(int argc, char* argv[])
     g.SetImage(g.LoadImage("Menu.png"));
     menu = g.GetImage();
     menu = resizeImage(menu, SCREEN_WIDTH, SCREEN_HEIGHT);
+
     // Load các frame ảnh vào một mảng
     SDL_Surface* frames[NUM_FRAMES] = { NULL };
     SDL_Surface* temp = NULL;
@@ -44,6 +46,25 @@ int main(int argc, char* argv[])
             return 1;
         }
         frames[i] = resizeImage(frames[i], SCREEN_WIDTH, SCREEN_HEIGHT);
+    }
+
+    // Load các frame_enter ảnh vào một mảng
+    SDL_Surface* frames_enter[NUM_FRAMES_ENTER] = { NULL };
+    SDL_Surface* temp_enter = NULL;
+    for (int i = 0; i < NUM_FRAMES_ENTER; ++i) {
+        std::string filename;
+        if (i < 9)
+            filename = "Start_01_0" + std::to_string(i + 1) + ".png";
+        else
+            filename = "Start_01_" + std::to_string(i + 1) + ".png";
+        g.SetImage(g.LoadImage(filename));
+        g.SetImage(g.SplitBackground(g.GetImage()));
+        frames_enter[i] = g.GetImage();
+        if (frames_enter[i] == nullptr) {
+            std::cerr << "Failed to load frame " << filename << "!" << std::endl;
+            return 1;
+        }
+        //frames_enter[i] = resizeImage(frames_enter[i], SCREEN_WIDTH, SCREEN_HEIGHT);
     }
 
     srand(time(NULL));
@@ -79,21 +100,21 @@ int main(int argc, char* argv[])
                 is_quit = true; // Thoat neu nhan phim ESC
                 break;
             }
-            else if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN)||Play ==true)
+            else if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) || Play == true)
             {
                 Play = true;
                 if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
                 {
                     if (plane.GetBullet().size() < Sum_of_Bullet)
                     {
-                        bullet.Create_bullet(plane.GetX() + 175, plane.GetY() + 111, "fire_enemy_02.png");
+                        bullet.Create_bullet(plane.GetX() + 170, plane.GetY() + 120, "fire_01.png");
                         bullet.SetShoot();
                         a = plane.GetBullet();
                         a.push_back(bullet);
                         plane.SetBullet(a);
-                        Mix_Chunk* beep_sound = Mix_LoadWAV("ting.wav");
-                        if (beep_sound != NULL)
-                            Mix_PlayChannel(-1, beep_sound, 0);
+                        sound1 = Mix_LoadWAV("shot.wav");
+                        if (sound1 != NULL)
+                            Mix_PlayChannel(-1, sound1, 0);
                     }
                 }
                 plane.Action(event);
@@ -101,9 +122,39 @@ int main(int argc, char* argv[])
             }
         }
         if (Play == false)
+        {
             ApplySurface(menu, screen, 0, 0);
+            //
+            //Mix_HaltChannel(-1);
+            Uint32 currentTime = SDL_GetTicks();
+
+            // Kiểm tra thời gian giữa các frame
+            if (currentTime - lastFrameTime >= FRAME_DELAY_ENTER) {
+                // Xóa màn hình
+                //SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
+
+                // Vẽ hình ảnh của plane và enemy lên màn hình
+                ApplySurface(frames_enter[currentFrame], screen, 0, 0);
+                // Cập nhật màn hình
+                SDL_Flip(screen);
+
+                // Cập nhật frame
+                currentFrame = (currentFrame + 1) % NUM_FRAMES_ENTER;
+
+                // Cập nhật thời gian cuối cùng
+                lastFrameTime = currentTime;
+            }
+            //
+            sound2 = Mix_LoadWAV("menu.wav");
+            if (sound2 != NULL)
+                Mix_PlayChannel(-1, sound2, 0);
+            /*sound1 = Mix_LoadWAV("shot.wav");
+            if (sound1 != NULL)
+                Mix_PlayChannel(-1, sound1, 0);*/
+        }
         else
         {
+            //Mix_HaltChannel(-1);
             Uint32 currentTime = SDL_GetTicks();
 
             // Kiểm tra thời gian giữa các frame

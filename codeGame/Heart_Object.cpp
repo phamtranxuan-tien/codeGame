@@ -5,7 +5,6 @@ Heart_Object::Heart_Object()
 	HP = 1;
 }
 
-
 void Heart_Object::CreateHeart(int xx, int yy, string filename)
 {
 	x = xx;
