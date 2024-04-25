@@ -88,6 +88,8 @@ void main_Object::Damage()
     this->DestroyMau();
     if (Mau[0].GetHP() == 0)
     {
+        y_val = 0;
+        x_val = 0;
         x = -300;
         y = -300;
         Play = -1;
@@ -102,7 +104,7 @@ void main_Object::DamageEnemy(vector <enemy_Object> e)
         if (e[i].GetX() <= 0)
         {
             for (int i = 0; i < 3; i++)
-                this->DestroyMau();
+                this->Damage();
             x = -300;
             y = -300;
             return;
