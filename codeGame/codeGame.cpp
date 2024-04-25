@@ -15,26 +15,26 @@ int main(int argc, char* argv[])
     vector <bullet_Object> a;
     vector <enemy_Object> e;
     enemy_Object enemy_temp;
-    srand(time(NULL));
+    SDL_Surface* menu = NULL;
 
-    for (int i = 0; i < Sum_of_Enemy; i++)
-    {
-        enemy_temp.SetX((rand() % SCREEN_WIDTH) / 2 + SCREEN_WIDTH);
-        enemy_temp.SetY(rand() % (SCREEN_HEIGHT - 175));
-        e.push_back(enemy_temp);
+    //Khoi tao am thanh
+    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+        std::cerr << "Failed to initialize SDL audio: " << SDL_GetError() << std::endl;
+        return 1;
     }
-    for (int i = 0; i < e.size(); i++)
-        cout << e[i].GetY() << " ";
-    if (plane.GetImage() == NULL)
-        return 0;
 
-    plane.SetImage(plane.SplitBackground(plane.GetImage()));
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        std::cerr << "Failed to initialize SDL_mixer: " << Mix_GetError() << std::endl;
+        return 1;
+    }
 
-    //ApplySurface(plane.GetImage(), screen, 0, 0);
-
+    g.SetImage(g.LoadImage("Menu.png"));
+    menu = g.GetImage();
+    menu = resizeImage(menu, SCREEN_WIDTH, SCREEN_HEIGHT);
     // Load các frame ảnh vào một mảng
     SDL_Surface* frames[NUM_FRAMES] = { NULL };
     SDL_Surface* temp = NULL;
+
     for (int i = 0; i < NUM_FRAMES; ++i) {
         std::string filename = "frame_" + std::to_string(i) + ".png";
         g.SetImage(g.LoadImage(filename));
@@ -46,6 +46,19 @@ int main(int argc, char* argv[])
         frames[i] = resizeImage(frames[i], SCREEN_WIDTH, SCREEN_HEIGHT);
     }
 
+    srand(time(NULL));
+    for (int i = 0; i < Sum_of_Enemy; i++)
+    {
+        enemy_temp.SetX((rand() % SCREEN_WIDTH) / 2 + SCREEN_WIDTH);
+        enemy_temp.SetY(rand() % (SCREEN_HEIGHT - 175));
+        e.push_back(enemy_temp);
+    }
+ 
+    if (plane.GetImage() == NULL)
+        return 0;
+
+    plane.SetImage(plane.SplitBackground(plane.GetImage()));
+    
     int currentFrame = 0;
     Uint32 lastFrameTime = 0;
     Uint32 currentTime;
@@ -66,38 +79,50 @@ int main(int argc, char* argv[])
                 is_quit = true; // Thoat neu nhan phim ESC
                 break;
             }
-            if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
+            else if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN)||Play ==true)
             {
-                if (plane.GetBullet().size() < Sum_of_Bullet)
+                Play = true;
+                if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
                 {
-                    bullet.Create_bullet(plane.GetX() + 170, plane.GetY() + 120, "fire_01.png");
-                    bullet.SetShoot();
-                    a = plane.GetBullet();
-                    a.push_back(bullet);
-                    plane.SetBullet(a);
+                    if (plane.GetBullet().size() < Sum_of_Bullet)
+                    {
+                        bullet.Create_bullet(plane.GetX() + 175, plane.GetY() + 111, "fire_enemy_02.png");
+                        bullet.SetShoot();
+                        a = plane.GetBullet();
+                        a.push_back(bullet);
+                        plane.SetBullet(a);
+                        Mix_Chunk* beep_sound = Mix_LoadWAV("ting.wav");
+                        if (beep_sound != NULL)
+                            Mix_PlayChannel(-1, beep_sound, 0);
+                    }
                 }
+                plane.Action(event);
+
             }
-            plane.Action(event);
         }
-        Uint32 currentTime = SDL_GetTicks();
+        if (Play == false)
+            ApplySurface(menu, screen, 0, 0);
+        else
+        {
+            Uint32 currentTime = SDL_GetTicks();
 
-        // Kiểm tra thời gian giữa các frame
-        if (currentTime - lastFrameTime >= FRAME_DELAY) {
-            // Xóa màn hình
-            SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
+            // Kiểm tra thời gian giữa các frame
+            if (currentTime - lastFrameTime >= FRAME_DELAY) {
+                // Xóa màn hình
+                SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
 
-            // Vẽ hình ảnh của plane và enemy lên màn hình
-            ApplySurface(frames[currentFrame], screen, 0, 0);
-            ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
-            for (int i = 0; i < e.size(); i++)
-                ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
-            vector <bullet_Object> b = plane.GetBullet();
-
-            for (int i = 0; i < e.size(); i++)
-                if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                // Vẽ hình ảnh của plane và enemy lên màn hình
+                ApplySurface(frames[currentFrame], screen, 0, 0);
+                ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
+                for (int i = 0; i < e.size(); i++)
                     ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
+                vector <bullet_Object> b = plane.GetBullet();
 
-   
+                for (int i = 0; i < e.size(); i++)
+                    if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                        ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
+
+
 
             for (int i = 0; i < e.size(); i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
@@ -113,25 +138,27 @@ int main(int argc, char* argv[])
             plane.Shoot();
             plane.Crush(e);
 
-            for (int i = 0; i < e.size(); i++)
-                if (e[i].GetX() != -1 && e[i].GetY() != -1)
-                {
-                    if (e[i].GetX() <= SCREEN_WIDTH)
-                        e[i].Shoot();
-                    e[i].Move();
-                }
-                   
-            // Cập nhật màn hình
-            SDL_Flip(screen);
+                for (int i = 0; i < e.size(); i++)
+                    if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                    {
+                        if (e[i].GetX() <= SCREEN_WIDTH)
+                            e[i].Shoot();
+                        e[i].Move();
+                    }
 
-            // Cập nhật frame
-            currentFrame = (currentFrame + 1) % NUM_FRAMES;
+                // Cập nhật màn hình
+                SDL_Flip(screen);
 
-            // Cập nhật thời gian cuối cùng
-            lastFrameTime = currentTime;
+                // Cập nhật frame
+                currentFrame = (currentFrame + 1) % NUM_FRAMES;
+
+                // Cập nhật thời gian cuối cùng
+                lastFrameTime = currentTime;
+            }
+
+            a.clear();
         }
-
-        a.clear();
+        
 
         // Cập nhật màn hình
         if (SDL_Flip(screen) == -1)

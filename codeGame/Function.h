@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <string>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <vector>
 #include "base_Object.h"
 #include "main_Object.h"
@@ -29,6 +30,7 @@ const int Sum_of_Heart = 3;
 //Khai bao bien toan cuc
 extern SDL_Surface* screen;
 extern SDL_Event event;
+extern bool Play;
 
 //Khai bao cac ham
 bool Init();
