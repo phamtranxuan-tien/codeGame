@@ -33,7 +33,7 @@ const int Sum_of_Heart = 3;
 //Khai bao bien toan cuc
 extern SDL_Surface* screen;
 extern SDL_Event event;
-extern bool Play;
+extern int Play;
 
 //Khai bao cac ham
 bool Init();

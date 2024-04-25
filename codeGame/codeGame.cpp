@@ -18,6 +18,8 @@ int main(int argc, char* argv[])
     SDL_Surface* menu = NULL;
     Mix_Chunk* sound1, * sound2;
 
+    int tt = 0;
+
     //Khoi tao am thanh
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         std::cerr << "Failed to initialize SDL audio: " << SDL_GetError() << std::endl;
@@ -106,7 +108,7 @@ int main(int argc, char* argv[])
             }
             else if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) || Play == true)
             {
-                Play = true;
+                Play = 1;
                 if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
                 {
                     if (plane.GetBullet().size() < Sum_of_Bullet)
@@ -125,7 +127,7 @@ int main(int argc, char* argv[])
 
             }
         }
-        if (Play == false)
+        if (Play == 0)
         {
             ApplySurface(menu, screen, 0, 0);
             //
@@ -138,7 +140,7 @@ int main(int argc, char* argv[])
                 //SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
 
                 // Vẽ hình ảnh của plane và enemy lên màn hình
-                ApplySurface(frames_enter[currentFrame], screen, SCREEN_WIDTH / 2 - 1010/4, 633);
+                ApplySurface(frames_enter[currentFrame], screen, SCREEN_WIDTH / 2 - 1010 / 4, 633);
                 // Cập nhật màn hình
                 SDL_Flip(screen);
 
@@ -156,8 +158,9 @@ int main(int argc, char* argv[])
             if (sound1 != NULL)
                 Mix_PlayChannel(-1, sound1, 0);*/
         }
-        else
+        else if (Play == 1)
         {
+            tt = 1;
             //Mix_HaltChannel(-1);
             Uint32 currentTime = SDL_GetTicks();
 
@@ -213,6 +216,28 @@ int main(int argc, char* argv[])
 
             a.clear();
         }
+        else
+        {
+            if (tt == 1)
+            {
+                plane.SetX(100);
+                plane.SetY(100);
+                e.clear();
+                a = plane.GetBullet();
+                a.clear();
+                plane.SetBullet(a);
+                ApplySurface(menu, screen, 0, 0);
+                for (int i = 0; i < Sum_of_Enemy; i++)
+                {
+                    enemy_temp.SetX((rand() % SCREEN_WIDTH) / 2 + SCREEN_WIDTH);
+                    enemy_temp.SetY(rand() % (SCREEN_HEIGHT - 175));
+                    e.push_back(enemy_temp);
+                }
+                plane.CreateMau();
+                tt = 0;
+            }
+           
+        }
         
 
         // Cập nhật màn hình
@@ -226,6 +251,7 @@ int main(int argc, char* argv[])
         SDL_FreeSurface(frames[i]);
     }
     CleanUp(g);
+    SDL_FreeSurface(plane.GetImage());
     SDL_Quit();
     return 1;
 }
