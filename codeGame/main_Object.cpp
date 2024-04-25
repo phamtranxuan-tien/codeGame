@@ -90,6 +90,7 @@ void main_Object::Damage()
     {
         x = -300;
         y = -300;
+        Play = -1;
         return;
     }
 }
@@ -310,6 +311,13 @@ void main_Object::CreateMau()
 {
     int XMau = 1000;
     int YMau = 10;
+    if (!Mau.empty())
+    {
+        for (int i = 0; i < Sum_of_Heart; i++)
+            SDL_FreeSurface(Mau[i].GetImage());
+        Mau.clear();
+    }
+        
     for (int i = 0; i < Sum_of_Heart; i++)
     {   
         Heart_Object temp;
