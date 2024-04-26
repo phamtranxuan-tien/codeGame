@@ -18,6 +18,8 @@ int main(int argc, char* argv[])
     SDL_Surface* menu = NULL;
     Mix_Chunk* sound1, * sound2;
 
+    int tt = 0;
+
     //Khoi tao am thanh
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         std::cerr << "Failed to initialize SDL audio: " << SDL_GetError() << std::endl;
@@ -32,9 +34,11 @@ int main(int argc, char* argv[])
     g.SetImage(g.LoadImage("Menu.png"));
     menu = g.GetImage();
     menu = resizeImage(menu, SCREEN_WIDTH, SCREEN_HEIGHT);
+
     // Load các frame ảnh vào một mảng
     SDL_Surface* frames[NUM_FRAMES] = { NULL };
     SDL_Surface* temp = NULL;
+
     for (int i = 0; i < NUM_FRAMES; ++i) {
         std::string filename = "frame_" + std::to_string(i) + ".png";
         g.SetImage(g.LoadImage(filename));
@@ -44,6 +48,29 @@ int main(int argc, char* argv[])
             return 1;
         }
         frames[i] = resizeImage(frames[i], SCREEN_WIDTH, SCREEN_HEIGHT);
+    }
+
+    // Load các frame_enter ảnh vào một mảng
+    SDL_Surface* frames_enter[NUM_FRAMES_ENTER] = { NULL };
+    SDL_Surface* temp_enter = NULL;
+    for (int i = 0; i < NUM_FRAMES_ENTER; ++i) {
+        std::string filename;
+        if (i < 1)
+            //filename = "Start_01_0" + std::to_string(i + 1) + ".png";
+            filename = "Start_01_01.png";
+        else
+            //filename = "Start_01_" + std::to_string(i + 1) + ".png";
+            filename = "Start_01_02.png";
+        g.SetImage(g.LoadImage(filename));
+        g.SetImage(resizeImage(g.GetImage(), 1010 / 2, 120 / 2));
+        g.SetImage(g.SplitBackground(g.GetImage()));
+        frames_enter[i] = g.GetImage();
+        if (frames_enter[i] == nullptr) {
+            std::cerr << "Failed to load frame " << filename << "!" << std::endl;
+            return 1;
+        }
+        //frames_enter[i] = resizeImage(frames_enter[i], 1010 / 2, 120 / 2);
+        //frames_enter[i] = SplitBackground(frames_enter[i]);
     }
 
     srand(time(NULL));
@@ -81,44 +108,58 @@ int main(int argc, char* argv[])
             }
             else if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) || Play == true)
             {
-                Play = true;
-                
-
+                Play = 1;
                 if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
                 {
                     if (plane.GetBullet().size() < Sum_of_Bullet)
                     {
-                        bullet.Create_bullet(plane.GetX() + 175, plane.GetY() + 111, "fire_enemy_02.png");
+                        bullet.Create_bullet(plane.GetX() + 170, plane.GetY() + 120, "fire_01.png");
                         bullet.SetShoot();
                         a = plane.GetBullet();
                         a.push_back(bullet);
                         plane.SetBullet(a);
-                        sound1 = Mix_LoadWAV("shot.wav");
+                        /*sound1 = Mix_LoadWAV("shot.wav");
                         if (sound1 != NULL)
-                            Mix_PlayChannel(-1, sound1, 0);
+                            Mix_PlayChannel(-1, sound1, 0);*/
                     }
                 }
                 plane.Action(event);
 
             }
         }
-        if (Play == false)
+        if (Play == 0)
         {
             ApplySurface(menu, screen, 0, 0);
-            sound2 = Mix_LoadWAV("menu.wav");
-            if (sound2 != NULL)
-                Mix_PlayChannel(-1, sound2, 0);
-            /*sound1 = Mix_LoadWAV("shot.wav");
-            if (sound1 != NULL)
-                Mix_PlayChannel(-1, sound1, 0);*/
-        }
-        else
-        {
-         //   Mix_HaltChannel(-1);
+            //
+            //Mix_HaltChannel(-1);
+            Uint32 currentTime = SDL_GetTicks();
 
-            sound2 = Mix_LoadWAV("sound_background.wav");
+            // Kiểm tra thời gian giữa các frame
+            if (currentTime - lastFrameTime >= FRAME_DELAY_ENTER) {
+                // Xóa màn hình
+                //SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
+
+                // Vẽ hình ảnh của plane và enemy lên màn hình
+                ApplySurface(frames_enter[currentFrame], screen, SCREEN_WIDTH / 2 - 1010 / 4, 633);
+                // Cập nhật màn hình
+                SDL_Flip(screen);
+
+                // Cập nhật frame
+                currentFrame = (currentFrame + 1) % NUM_FRAMES_ENTER;
+
+                // Cập nhật thời gian cuối cùng
+                lastFrameTime = currentTime;
+            }
+            //
+            /*sound2 = Mix_LoadWAV("menu.wav");
             if (sound2 != NULL)
-                Mix_PlayChannel(-1, sound2, 0);
+                Mix_PlayChannel(-1, sound2, 0);*/
+       
+        }
+        else if (Play == 1)
+        {
+            tt = 1;
+            //Mix_HaltChannel(-1);
             Uint32 currentTime = SDL_GetTicks();
 
             // Kiểm tra thời gian giữa các frame
@@ -173,6 +214,29 @@ int main(int argc, char* argv[])
 
             a.clear();
         }
+        else
+        {
+            if (tt == 1)
+            {
+                plane.SetX(100);
+                plane.SetY(100);
+               
+                e.clear();
+                a = plane.GetBullet();
+                a.clear();
+                plane.SetBullet(a);
+                ApplySurface(menu, screen, 0, 0);
+                for (int i = 0; i < Sum_of_Enemy; i++)
+                {
+                    enemy_temp.SetX((rand() % SCREEN_WIDTH) / 2 + SCREEN_WIDTH);
+                    enemy_temp.SetY(rand() % (SCREEN_HEIGHT - 175));
+                    e.push_back(enemy_temp);
+                }
+                plane.CreateMau();
+                tt = 0;
+            }
+           
+        }
         
 
         // Cập nhật màn hình
@@ -181,11 +245,13 @@ int main(int argc, char* argv[])
     }
 
     // Giải phóng bộ nhớ
+  
     for (int i = 0; i < NUM_FRAMES; ++i)
     {
         SDL_FreeSurface(frames[i]);
     }
     CleanUp(g);
+    SDL_FreeSurface(plane.GetImage());
     SDL_Quit();
     return 1;
 }
