@@ -36,10 +36,10 @@ extern SDL_Event event;
 extern int Play;
 
 //Khai bao cac ham
-bool Init();
-void CleanUp(base_Object);
-void ApplySurface(SDL_Surface*, SDL_Surface*, int, int);
-SDL_Surface* SplitBackground(SDL_Surface*);
-SDL_Surface* resizeImage(SDL_Surface*, int, int);
+bool Init(); //Khởi window
+void CleanUp(base_Object); //Thu hồi bộ nhớ
+void ApplySurface(SDL_Surface*, SDL_Surface*, int, int); //Vẽ đối tượng lên màn hình
+SDL_Surface* SplitBackground(SDL_Surface*); //Chuyển nền màu xám (179, 179, 179) thành màu trong suốt
+SDL_Surface* resizeImage(SDL_Surface*, int, int); //Đổi kích thước ảnh
 
 #endif
