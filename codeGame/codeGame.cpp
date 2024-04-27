@@ -109,6 +109,8 @@ int main(int argc, char* argv[])
             else if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) || Play == true)
             {
                 Play = 1;
+                if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN)
+                    Mix_HaltChannel(-1);
                 if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
                 {
                     if (plane.GetBullet().size() < Sum_of_Bullet)
@@ -118,9 +120,9 @@ int main(int argc, char* argv[])
                         a = plane.GetBullet();
                         a.push_back(bullet);
                         plane.SetBullet(a);
-                        /*sound1 = Mix_LoadWAV("shot.wav");
+                        sound1 = Mix_LoadWAV("shot.wav");
                         if (sound1 != NULL)
-                            Mix_PlayChannel(-1, sound1, 0);*/
+                            Mix_PlayChannel(-1, sound1, 0);
                     }
                 }
                 plane.Action(event);
@@ -129,9 +131,11 @@ int main(int argc, char* argv[])
         }
         if (Play == 0)
         {
+            sound2 = Mix_LoadWAV("menu.wav");
+            if (sound2 != NULL)
+                Mix_PlayChannel(-1, sound2, 0);
             ApplySurface(menu, screen, 0, 0);
-            //
-            //Mix_HaltChannel(-1);
+            
             Uint32 currentTime = SDL_GetTicks();
 
             // Kiểm tra thời gian giữa các frame
@@ -151,9 +155,7 @@ int main(int argc, char* argv[])
                 lastFrameTime = currentTime;
             }
             //
-            /*sound2 = Mix_LoadWAV("menu.wav");
-            if (sound2 != NULL)
-                Mix_PlayChannel(-1, sound2, 0);*/
+            
        
         }
         else if (Play == 1)
@@ -218,6 +220,9 @@ int main(int argc, char* argv[])
         {
             if (tt == 1)
             {
+                sound2 = Mix_LoadWAV("menu.wav");
+                if (sound2 != NULL)
+                    Mix_PlayChannel(-1, sound2, 0);
                 plane.SetX(100);
                 plane.SetY(100);
                
