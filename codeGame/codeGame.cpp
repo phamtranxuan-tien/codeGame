@@ -240,6 +240,7 @@ int main(int argc, char* argv[])
         }
         
 
+
         // Cập nhật màn hình
         if (SDL_Flip(screen) == -1)
             return 0;
