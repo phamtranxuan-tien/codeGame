@@ -229,10 +229,7 @@ int main(int argc, char* argv[])
 
                  //Load hinh nen play again
                 ApplySurface(menu, screen, 0, 0);
-                g.SetImage(g.LoadImage("Replay.png"));
-                g.SetImage(resizeImage(g.GetImage(), 1010 / 2, 120 / 2));
-                g.SetImage(g.SplitBackground(g.GetImage()));
-                ApplySurface(g.GetImage(), screen, SCREEN_WIDTH / 2 - 1010 / 4, 633);
+                
 
                 //Cap nhat lai toa do dich
                 for (int i = 0; i < Sum_of_Enemy; i++)
