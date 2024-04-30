@@ -26,13 +26,13 @@ public:
 	void Shoot(); //Ham ban dan 
 	void Crush(vector <enemy_Object>&); //Kiem tra va cham voi dich va cap nhat lai ke dich
 	void Crush(vector <bullet_Object>&); //Kiem tra va cham voi dan
-	void Damage(); //Gây thiệt hại lên máu của đối tượng chính khi va chạm
-	void DamageEnemy(vector <enemy_Object>); //Gây thiệt hại lên máu của đối tượng chính khi máy bay địch đi quá phạm vi cần bảo vệ 
+	void Damage(); //Gay thiet hai khi trung dan hoac va cham may may dich
+	void DamageEnemy(vector <enemy_Object>); //Gay thiet hai khi dich di qua pham vi can bao ve
 
-	vector <Heart_Object> GetMau(); //Lấy vector máu của đối tượng chính
-	void SetMau(vector <Heart_Object>); //Cập nhật vector máu của đối tượng chính
-	void CreateMau(); //Tạo vector máu của đối tượng chính
-	void DestroyMau(); //Làm giảm máu của đối tượng chính bằng cách chỉnh thuộc tính HP và hình ảnh của các đối tượng máu trong vector máu
-	void DrawMau(); //Vẽ vector máu lên màn hình
+	vector <Heart_Object> GetMau(); //Lay vector Mau
+	void SetMau(vector <Heart_Object>); //Cap nhat vector Mau
+	void CreateMau(); //Tao vector Mau
+	void DestroyMau(); //Thay doi thuoc tinh HP cua doi tuong Mau trong vector Mau khi doi tuong chinh bi thiet hai
+	void DrawMau(); //Ve vector Mau len man hinh
 };
 

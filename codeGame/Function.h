@@ -39,6 +39,6 @@ extern int Play;
 bool Init(); //Khoi tao cua so window 
 void CleanUp(base_Object); //Thu hoi bo nho
 void ApplySurface(SDL_Surface*, SDL_Surface*, int, int); //Ve anh len man hinh
-SDL_Surface* resizeImage(SDL_Surface*, int, int); //Đổi kích thước ảnh
+SDL_Surface* resizeImage(SDL_Surface*, int, int); //Doi kich thuoc anh
 
 #endif
