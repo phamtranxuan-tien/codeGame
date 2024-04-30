@@ -2,7 +2,8 @@
 
 SDL_Surface* screen = NULL;
 SDL_Event event = {};
-bool Play = false;
+//play = 0: chua choi, 1: dang choi //-1 :man hinh choi lai
+int Play = 0;
 
 //Ve anh len man hinh
 void ApplySurface(SDL_Surface* src, SDL_Surface* des, int x, int y)
