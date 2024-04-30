@@ -49,5 +49,8 @@ void enemy_Object::Shoot()
 	}
 	for (int i = 0; i < bullets.size(); ++i)
 		if (bullets[i].GetX() <= 0 && bullets.size() > 1)
+		{
+			SDL_FreeSurface(bullets[i].GetImage());
 			bullets.erase(bullets.begin() + i);
+		}
 }

@@ -1,14 +1,14 @@
 ﻿#pragma once
 #include "Function.h"
 
-class Heart_Object :public base_Object //Đối tượng Máu kế thừa từ đối tượng cơ bản
+class Heart_Object :public base_Object //Class mau ke thua tu class base_Object
 {
 private:
-	int HP; //Thuộc tính HP đại diện cho máy bay chính còn máu hay hết máu
+	int HP; //Thuoc tinh HP dai dien cho doi tuong plane da het mau hay chua
 public:
-	Heart_Object(); //Khởi tạo lớp đối tượng máu
-	void CreateHeart(int, int, string); //Tạo đối tượng máu
-	int GetHP(); //Lấy thuộc tính của HP
-	void SetHP(int); //Cập nhật thuộc tính HP
+	Heart_Object(); //Ham khoi tao mac dinh
+	void CreateHeart(int, int, string); //Ham khoi tao cac thuoc tinh cua mot doi tuong
+	int GetHP(); //Lay thuoc tinh HP
+	void SetHP(int); //Cap nhat thuoc tinh HP
 };
 

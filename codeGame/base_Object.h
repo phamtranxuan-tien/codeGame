@@ -5,20 +5,20 @@
 #include <SDL_image.h>
 using namespace std; 
 
-class base_Object //??i t??ng c? b?n
+class base_Object //Lop co ban
 {
 protected:
-	int x, y; //t?a ?? c?a các ??i t??ng
-	SDL_Surface* image; //?nh c?a ??i t??ng
+	int x, y; //Thuoc tinh ve toa do 
+	SDL_Surface* image; //Thuoc tinh hinh anh
 public:
-	base_Object(); //Kh?i t?o ??i t??ng c? s?
-	SDL_Surface* LoadImage(string); //Load ?nh c?a ??i t??ng
-	void SetImage(SDL_Surface*); //C?p nh?t ?nh c?a ??i t??ng
-	SDL_Surface* GetImage(); //L?y ?nh ???c l?u trong ??i t??ng
-	void SetX(int); //C?p nh?t giá tr? X c?a ??i t??ng
-	int GetX(); //L?y giá tr? X c?a ??i t??ng
-	void SetY(int); //C?p nh?t giá tr? Y c?a ??i t??ng
-	int GetY(); //L?y giá tr? Y c?a ??i t??ng
-	SDL_Surface* SplitBackground(SDL_Surface*); //Xóa n?n cho các ??i t??ng
+	base_Object(); //Ham khoi tao mac dinh
+	SDL_Surface* LoadImage(string); //Ham load anh 
+	void SetImage(SDL_Surface*); //Cap nhat hinh 
+	SDL_Surface* GetImage(); //Ham tra ve hinh anh 
+	void SetX(int); //Cap nhat hoanh do X
+	int GetX(); //Lay gia tri hoanh do X
+	void SetY(int); //Cap nhat tung do Y
+	int GetY(); //Lay gia tri tung do Y
+	SDL_Surface* SplitBackground(SDL_Surface*); //Tat nen hinh anh
 };
 

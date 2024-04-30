@@ -79,7 +79,11 @@ void main_Object::Shoot()
         ApplySurface(bullets[i].GetImage(), screen, bullets[i].GetX(), bullets[i].GetY());
         bullets[i].Move(0);
         if (bullets[i].GetX() >= SCREEN_WIDTH)
+        {
+            SDL_FreeSurface(bullets[i].GetImage());
             bullets.erase(bullets.begin() + i);
+        }
+            
     }
 }
 

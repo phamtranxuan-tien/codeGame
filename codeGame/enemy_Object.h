@@ -1,16 +1,16 @@
 ﻿#pragma once
 #include "Function.h"
 
-class enemy_Object :public base_Object //Đối tượng Kẻ địch kế thừa từ đối tượng cơ bản
+class enemy_Object :public base_Object //Class dich duoc ke thua tu class base_Object
 {
 private:
-	vector <bullet_Object> bullets; //Thuộc tính vector đạn đại diện cho các viên đạn mà kẻ địch sẽ bắn
+	vector <bullet_Object> bullets; //Thuoc tinh dai dien cho dan cua ke dich
 public:
- 	enemy_Object(); //Khởi tạo đối tượng kẻ địch
-	void Move(); //Di chuyển kẻ địch trên màn hình
-	void Destroy(vector <bullet_Object>&); //Loại bỏ đối tượng địch khi bị trúng đạn
-	vector<bullet_Object> GetBullet(); //Lấy vector đạn của địch
-	void SetBullet(vector <bullet_Object>); //Cập nhật vector đạn của địch
-	void Shoot(); //phương thức bắn đạn của địch
+ 	enemy_Object(); //Ham khoi tao mac dinh
+	void Move(); //Di chuyen ke dich tren man hinh
+	void Destroy(vector <bullet_Object>&); //Loai bo doi tuong khi bị trung dan
+	vector<bullet_Object> GetBullet(); //Lay vector dan cua class dich 
+	void SetBullet(vector <bullet_Object>); //Cap nhat vector dan
+	void Shoot(); //Phuong thuc ban cua dich
 };
 
