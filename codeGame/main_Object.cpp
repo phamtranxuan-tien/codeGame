@@ -17,7 +17,7 @@ void main_Object::Move()
 {
     if (x + x_val >= 0 && x + x_val <= SCREEN_WIDTH - 270)
         x += x_val;
-    if (y + y_val >= 0 && y + y_val <= SCREEN_HEIGHT - 175)
+    if (y + y_val >= -30 && y + y_val <= SCREEN_HEIGHT - 175)
         y += y_val;
 }
 
@@ -79,7 +79,11 @@ void main_Object::Shoot()
         ApplySurface(bullets[i].GetImage(), screen, bullets[i].GetX(), bullets[i].GetY());
         bullets[i].Move(0);
         if (bullets[i].GetX() >= SCREEN_WIDTH)
+        {
+            SDL_FreeSurface(bullets[i].GetImage());
             bullets.erase(bullets.begin() + i);
+        }
+            
     }
 }
 
@@ -101,7 +105,7 @@ void main_Object::DamageEnemy(vector <enemy_Object> e)
 {
     for (int i = 0; i < e.size(); i++)
     {
-        if (e[i].GetX() <= 0)
+        if (e[i].GetX() <= -60)
         {
             for (int i = 0; i < 3; i++)
                 this->Damage();

@@ -7,7 +7,7 @@ enemy_Object::enemy_Object()
 
 void enemy_Object::Move()
 {
-	if (x > 0)
+	if (x - 5 >= -60)
 		x = x - 5;
 }
 
@@ -38,7 +38,7 @@ void enemy_Object::Shoot()
 	bullet_Object bullet;
 	if (bullets.empty() || x - bullets[bullets.size() - 1].GetX()  == 500)
 	{
-		bullet.Create_bullet(x+x/4, y+y/2, "fire_enemy_02.png");
+		bullet.Create_bullet(x + 90, y + 85, "fire_enemy_02.png");
 		bullets.push_back(bullet);
 	}
 	for (int i = 0; i < bullets.size(); ++i)
@@ -49,5 +49,8 @@ void enemy_Object::Shoot()
 	}
 	for (int i = 0; i < bullets.size(); ++i)
 		if (bullets[i].GetX() <= 0 && bullets.size() > 1)
+		{
+			SDL_FreeSurface(bullets[i].GetImage());
 			bullets.erase(bullets.begin() + i);
+		}
 }
