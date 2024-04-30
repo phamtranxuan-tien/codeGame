@@ -227,11 +227,21 @@ int main(int argc, char* argv[])
                 a.clear();
                 plane.SetBullet(a);
 
-                 //Load hinh nen play again
-                ApplySurface(menu, screen, 0, 0);
-                
+                // Load ảnh "Replay"
+                SDL_Surface* replayButton = g.LoadImage("Replay.png");
+                if (!replayButton) {
+                    std::cerr << "Failed to load replay button image!" << std::endl;
+                }
+                replayButton = resizeImage(replayButton, 1010 / 2, 120 / 2);
+                replayButton = g.SplitBackground(replayButton);
 
-                //Cap nhat lai toa do dich
+                // Ve menu len man hinh
+                ApplySurface(menu, screen, 0, 0);
+                ApplySurface(replayButton, screen, 300, 620);
+                // Giai phong bo nho anh "Replay"
+                SDL_FreeSurface(replayButton);
+
+
                 for (int i = 0; i < Sum_of_Enemy; i++)
                 {
                     enemy_temp.SetX((rand() % SCREEN_WIDTH) / 2 + SCREEN_WIDTH);
