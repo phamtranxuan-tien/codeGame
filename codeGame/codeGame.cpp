@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
     menu = g.GetImage();
     menu = resizeImage(menu, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    // Load các frame ảnh vào một mảng
+    //Load cac frame anh vao mang
     SDL_Surface* frames[NUM_FRAMES] = { NULL };
     SDL_Surface* temp = NULL;
 
@@ -50,16 +50,14 @@ int main(int argc, char* argv[])
         frames[i] = resizeImage(frames[i], SCREEN_WIDTH, SCREEN_HEIGHT);
     }
 
-    // Load các frame_enter ảnh vào một mảng
+    // Load cac frame_enter anh vao mot mang
     SDL_Surface* frames_enter[NUM_FRAMES_ENTER] = { NULL };
     SDL_Surface* temp_enter = NULL;
     for (int i = 0; i < NUM_FRAMES_ENTER; ++i) {
         std::string filename;
         if (i < 1)
-            //filename = "Start_01_0" + std::to_string(i + 1) + ".png";
             filename = "Start_01_01.png";
         else
-            //filename = "Start_01_" + std::to_string(i + 1) + ".png";
             filename = "Start_01_02.png";
         g.SetImage(g.LoadImage(filename));
         g.SetImage(resizeImage(g.GetImage(), 1010 / 2, 120 / 2));
@@ -69,10 +67,9 @@ int main(int argc, char* argv[])
             std::cerr << "Failed to load frame " << filename << "!" << std::endl;
             return 1;
         }
-        //frames_enter[i] = resizeImage(frames_enter[i], 1010 / 2, 120 / 2);
-        //frames_enter[i] = SplitBackground(frames_enter[i]);
     }
 
+    //Khoi tao ngau nhien vi tri cua ke dich
     srand(time(NULL));
     for (int i = 0; i < Sum_of_Enemy; i++)
     {
@@ -81,16 +78,16 @@ int main(int argc, char* argv[])
         e.push_back(enemy_temp);
     }
  
+    //Tach nen may bay
     if (plane.GetImage() == NULL)
         return 0;
-
     plane.SetImage(plane.SplitBackground(plane.GetImage()));
     
+    //Khoi tao mau
+    plane.CreateMau();
+
     int currentFrame = 0;
     Uint32 lastFrameTime = 0;
-    Uint32 currentTime;
-
-    plane.CreateMau();
 
     while (!is_quit)
     {
@@ -110,16 +107,19 @@ int main(int argc, char* argv[])
             {
                 Play = 1;
                 if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN)
-                    Mix_HaltChannel(-1);
+                    Mix_HaltChannel(-1); //Tat sound2 neu nhan phim enter
                 if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
                 {
                     if (plane.GetBullet().size() < Sum_of_Bullet)
                     {
+                        //Them dan vua duoc ban vao vector dan cua plane
                         bullet.Create_bullet(plane.GetX() + 170, plane.GetY() + 120, "fire_01.png");
                         bullet.SetShoot();
                         a = plane.GetBullet();
                         a.push_back(bullet);
                         plane.SetBullet(a);
+                        
+                        //Phat am thanh tieng sung
                         sound1 = Mix_LoadWAV("shot.wav");
                         if (sound1 != NULL)
                             Mix_PlayChannel(-1, sound1, 0);
@@ -131,6 +131,7 @@ int main(int argc, char* argv[])
         }
         if (Play == 0)
         {
+            //Phat am thanh nen
             sound2 = Mix_LoadWAV("menu.wav");
             if (sound2 != NULL)
                 Mix_PlayChannel(-1, sound2, 0);
@@ -138,64 +139,57 @@ int main(int argc, char* argv[])
             
             Uint32 currentTime = SDL_GetTicks();
 
-            // Kiểm tra thời gian giữa các frame
+            // Kiem tra thoi gian giua cac frame
             if (currentTime - lastFrameTime >= FRAME_DELAY_ENTER) {
-                // Xóa màn hình
-                //SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
 
-                // Vẽ hình ảnh của plane và enemy lên màn hình
+                // Ve anh plane va emeny len man hinh
                 ApplySurface(frames_enter[currentFrame], screen, SCREEN_WIDTH / 2 - 1010 / 4, 633);
-                // Cập nhật màn hình
+                // Cap nhat man hinh
                 SDL_Flip(screen);
 
-                // Cập nhật frame
+                // Cap nhat frame
                 currentFrame = (currentFrame + 1) % NUM_FRAMES_ENTER;
 
-                // Cập nhật thời gian cuối cùng
+                // Cap nhat thoi gian cuoi cung
                 lastFrameTime = currentTime;
             }
-            //
-            
-       
         }
         else if (Play == 1)
         {
             tt = 1;
-            //Mix_HaltChannel(-1);
             Uint32 currentTime = SDL_GetTicks();
 
-            // Kiểm tra thời gian giữa các frame
+            // Kiem tra thoi gian giua cac frame
             if (currentTime - lastFrameTime >= FRAME_DELAY) {
-                // Xóa màn hình
+                // Xoa man hinh
                 SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
 
-                // Vẽ hình ảnh của plane và enemy lên màn hình
+                // Ve anh plane va emeny len man hinh
                 ApplySurface(frames[currentFrame], screen, 0, 0);
                 ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
-                for (int i = 0; i < e.size(); i++)
-                    ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
-                vector <bullet_Object> b = plane.GetBullet();
 
                 for (int i = 0; i < e.size(); i++)
                     if (e[i].GetX() != -1 && e[i].GetY() != -1)
                         ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
+                
+                //Pha huy dich neu bi ban trung
+                vector <bullet_Object> b = plane.GetBullet();
+                for (int i = 0; i < e.size(); i++)
+                    if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                    {
+                        e[i].Destroy(b);
+                        if (e[i].GetX() == -1 && e[i].GetY() == -1)
+                            e.erase(e.begin() + i);
+                    }
+                
+                //Hien thi va cap nhat cac thuoc tinh cua doi tuong may bay
+                plane.DrawMau();
+                plane.SetBullet(b);
+                plane.Move();
+                plane.Shoot();
+                plane.Crush(e);
 
-
-
-            for (int i = 0; i < e.size(); i++)
-                if (e[i].GetX() != -1 && e[i].GetY() != -1)
-                {
-                    e[i].Destroy(b);
-                    if (e[i].GetX() == -1 && e[i].GetY() == -1)
-                        e.erase(e.begin() + i);
-                }
-              
-            plane.DrawMau();
-            plane.SetBullet(b);
-            plane.Move();
-            plane.Shoot();
-            plane.Crush(e);
-
+                //Cap nhat toa do cua dich va dan cua dich
                 for (int i = 0; i < e.size(); i++)
                     if (e[i].GetX() != -1 && e[i].GetY() != -1)
                     {
@@ -204,56 +198,68 @@ int main(int argc, char* argv[])
                         e[i].Move();
                     }
 
-                // Cập nhật màn hình
+                //Cap nhat man hinh
                 SDL_Flip(screen);
-
-                // Cập nhật frame
+                //cap nhat frame
                 currentFrame = (currentFrame + 1) % NUM_FRAMES;
 
-                // Cập nhật thời gian cuối cùng
+                // Cap nhat thoi gian cuoi cung
                 lastFrameTime = currentTime;
             }
-
             a.clear();
         }
         else
         {
             if (tt == 1)
             {
+                //Load am thanh
                 sound2 = Mix_LoadWAV("menu.wav");
                 if (sound2 != NULL)
                     Mix_PlayChannel(-1, sound2, 0);
+
+                //Cap nhat lai toa do may bay
                 plane.SetX(100);
                 plane.SetY(100);
                
+                //Cap nhat lai vector dan
                 e.clear();
                 a = plane.GetBullet();
                 a.clear();
                 plane.SetBullet(a);
+
+                 //Load hinh nen play again
                 ApplySurface(menu, screen, 0, 0);
+                g.SetImage(g.LoadImage("Replay.png"));
+                g.SetImage(resizeImage(g.GetImage(), 1010 / 2, 120 / 2));
+                g.SetImage(g.SplitBackground(g.GetImage()));
+                ApplySurface(g.GetImage(), screen, SCREEN_WIDTH / 2 - 1010 / 4, 633);
+
+                //Cap nhat lai toa do dich
                 for (int i = 0; i < Sum_of_Enemy; i++)
                 {
                     enemy_temp.SetX((rand() % SCREEN_WIDTH) / 2 + SCREEN_WIDTH);
                     enemy_temp.SetY(rand() % (SCREEN_HEIGHT - 175));
                     e.push_back(enemy_temp);
                 }
+
+                //Cap nhat lai mau
                 plane.CreateMau();
                 tt = 0;
-            }
-           
+            }  
         }
-        
-
-        // Cập nhật màn hình
+        //Cap nhat man hinh
         if (SDL_Flip(screen) == -1)
             return 0;
     }
 
-    // Giải phóng bộ nhớ
-  
+    //Giai phong bo nho
     for (int i = 0; i < NUM_FRAMES; ++i)
     {
         SDL_FreeSurface(frames[i]);
+    }
+    for (int i = 0; i < NUM_FRAMES_ENTER; ++i)
+    {
+        SDL_FreeSurface(frames_enter[i]);
     }
     CleanUp(g);
     SDL_FreeSurface(plane.GetImage());
