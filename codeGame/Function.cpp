@@ -1,4 +1,4 @@
-﻿    #include "Function.h"
+﻿#include "Function.h"
 
 SDL_Surface* screen = NULL;
 SDL_Event event = {};
