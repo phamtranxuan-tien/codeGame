@@ -261,13 +261,9 @@ int main(int argc, char* argv[])
 
     //Giai phong bo nho
     for (int i = 0; i < NUM_FRAMES; ++i)
-    {
         SDL_FreeSurface(frames[i]);
-    }
     for (int i = 0; i < NUM_FRAMES_ENTER; ++i)
-    {
         SDL_FreeSurface(frames_enter[i]);
-    }
     CleanUp(g);
     SDL_FreeSurface(plane.GetImage());
     SDL_Quit();

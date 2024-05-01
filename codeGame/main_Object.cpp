@@ -97,6 +97,7 @@ void main_Object::Damage()
         x = -300;
         y = -300;
         Play = -1;
+        Die();
         return;
     }
 }
@@ -350,4 +351,43 @@ void main_Object::DrawMau()
 {
     for (int i = 0; i < Sum_of_Heart; i++)
         ApplySurface(Mau[i].GetImage(), screen, Mau[i].GetX(), Mau[i].GetY());
+}
+
+void main_Object::Die()
+{
+    main_Object g;
+    // Load cac frame_boomb anh vao mot mang
+    SDL_Surface* frames_boomb[NUM_FRAMES] = { NULL };
+    SDL_Surface* temp_enter = NULL;
+    for (int i = 1; i <= 8; ++i) {
+        string filename = "boomb_0";
+        filename += to_string(i);
+        filename += ".png";
+        g.SetImage(g.LoadImage(filename));
+        g.SetImage(resizeImage(g.GetImage(), 1010 / 2, 120 / 2));
+        g.SetImage(g.SplitBackground(g.GetImage()));
+        frames_boomb[i - 1] = g.GetImage();
+        if (frames_boomb[i - 1] == nullptr) {
+            std::cerr << "Failed to load frame " << filename << "!" << std::endl;
+            return;
+        }
+    }
+    //Hien thi cac frame_boomb
+    int currentFrame = 0;
+    Uint32 lastFrameTime = 0;
+    while(currentFrame < 8)
+    {
+        Uint32 currentTime = SDL_GetTicks();
+        if (currentTime - lastFrameTime >= FRAME_DELAY_ENTER) {
+
+            ApplySurface(frames_boomb[currentFrame], screen, x, y);
+            SDL_Flip(screen);
+            currentFrame = (currentFrame + 1) % 8;
+            lastFrameTime = currentTime;
+        }
+    }
+
+    //Giai phong bo nho
+    for (int i = 0; i < NUM_FRAMES; ++i)
+        SDL_FreeSurface(frames_boomb[i]);
 }

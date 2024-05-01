@@ -34,5 +34,6 @@ public:
 	void CreateMau(); //Tạo vector máu của đối tượng chính
 	void DestroyMau(); //Làm giảm máu của đối tượng chính bằng cách chỉnh thuộc tính HP và hình ảnh của các đối tượng máu trong vector máu
 	void DrawMau(); //Vẽ vector máu lên màn hình
+	void Die();
 };
 
