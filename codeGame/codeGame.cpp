@@ -54,13 +54,7 @@ int main(int argc, char* argv[])
     SDL_Surface* frames_enter[NUM_FRAMES_ENTER] = { NULL };
     SDL_Surface* temp_enter = NULL;
     for (int i = 0; i < NUM_FRAMES_ENTER; ++i) {
-        std::string filename;
-        if (i < 1)
-            //filename = "Start_01_0" + std::to_string(i + 1) + ".png";
-            filename = "Start_01_01.png";
-        else
-            //filename = "Start_01_" + std::to_string(i + 1) + ".png";
-            filename = "Start_01_02.png";
+        std::string filename = "Start_01_01.png";
         g.SetImage(g.LoadImage(filename));
         g.SetImage(resizeImage(g.GetImage(), 1010 / 2, 120 / 2));
         g.SetImage(g.SplitBackground(g.GetImage()));
@@ -69,8 +63,6 @@ int main(int argc, char* argv[])
             std::cerr << "Failed to load frame " << filename << "!" << std::endl;
             return 1;
         }
-        //frames_enter[i] = resizeImage(frames_enter[i], 1010 / 2, 120 / 2);
-        //frames_enter[i] = SplitBackground(frames_enter[i]);
     }
 
     srand(time(NULL));
@@ -180,8 +172,6 @@ int main(int argc, char* argv[])
                     if (e[i].GetX() != -1 && e[i].GetY() != -1)
                         ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
 
-
-
             for (int i = 0; i < e.size(); i++)
                 if (e[i].GetX() != -1 && e[i].GetY() != -1)
                 {
@@ -230,7 +220,22 @@ int main(int argc, char* argv[])
                 a = plane.GetBullet();
                 a.clear();
                 plane.SetBullet(a);
+
+                // Load ảnh "Replay"
+                SDL_Surface* replayButton = g.LoadImage("Replay.png");
+                if (!replayButton) {
+                    std::cerr << "Failed to load replay button image!" << std::endl;
+                }
+                replayButton = resizeImage(replayButton, 1010 / 2, 120 / 2);
+                replayButton = g.SplitBackground(replayButton);
+
+                // Vẽ menu lên màn hình
                 ApplySurface(menu, screen, 0, 0);
+                ApplySurface(replayButton, screen, 300, 620);
+                // Giải phóng bộ nhớ của ảnh "Replay"
+                SDL_FreeSurface(replayButton);
+
+
                 for (int i = 0; i < Sum_of_Enemy; i++)
                 {
                     enemy_temp.SetX((rand() % SCREEN_WIDTH) / 2 + SCREEN_WIDTH);
