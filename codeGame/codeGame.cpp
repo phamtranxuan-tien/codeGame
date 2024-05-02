@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
     vector <enemy_Object> e;
     enemy_Object enemy_temp;
     SDL_Surface* menu = NULL;
-    Mix_Chunk* sound1, * sound2;
+    Mix_Chunk* sound_shot=NULL, * sound_menu = NULL, * sound_boom = NULL;
 
     int tt = 0;
 
@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
             {
                 Play = 1;
                 if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN)
-                    Mix_HaltChannel(-1); //Tat sound2 neu nhan phim enter
+                    Mix_HaltChannel(-1); //Tat sound_menu neu nhan phim enter
                 if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
                 {
                     if (plane.GetBullet().size() < Sum_of_Bullet)
@@ -140,9 +140,9 @@ int main(int argc, char* argv[])
                         plane.SetBullet(a);
                         
                         //Phat am thanh tieng sung
-                        sound1 = Mix_LoadWAV("shot.wav");
-                        if (sound1 != NULL)
-                            Mix_PlayChannel(-1, sound1, 0);
+                        sound_shot = Mix_LoadWAV("shot.wav");
+                        if (sound_shot != NULL)
+                            Mix_PlayChannel(-1, sound_shot, 0);
                     }
                 }
                 plane.Action(event);
@@ -152,9 +152,9 @@ int main(int argc, char* argv[])
         if (Play == 0)
         {
             //Phat am thanh nen
-            sound2 = Mix_LoadWAV("menu.wav");
-            if (sound2 != NULL)
-                Mix_PlayChannel(-1, sound2, 0);
+            sound_menu = Mix_LoadWAV("menu.wav");
+            if (sound_menu != NULL)
+                Mix_PlayChannel(-1, sound_menu, 0);
             ApplySurface(menu, screen, 0, 0);
             
             Uint32 currentTime = SDL_GetTicks();
@@ -186,13 +186,15 @@ int main(int argc, char* argv[])
                 x_temp = plane.GetX(), y_temp = plane.GetY();
             Uint32 currentTime1 = SDL_GetTicks();
             if (currentTime1 - lastFrameTime1 >= 100 && plane.GetMau()[0].GetHP() == 0) {
+                sound_boom = Mix_LoadWAV("boom_01.wav");
+                if (sound_boom != NULL)
+                    Mix_PlayChannel(-1, sound_boom, 0);
                 plane.SetX(-300);
                 plane.SetY(-300);
                 ApplySurface(frames_boomb[currentFrame1], screen, x_temp, y_temp);
                 SDL_Flip(screen);
                 currentFrame1 = (currentFrame1 + 1) % 8;
                 lastFrameTime1 = currentTime1;
-                
             }
                 
             
@@ -252,9 +254,10 @@ int main(int argc, char* argv[])
             if (tt == 1)
             {
                 //Load am thanh
-                sound2 = Mix_LoadWAV("menu.wav");
-                if (sound2 != NULL)
-                    Mix_PlayChannel(-1, sound2, 0);
+                Mix_FreeChunk(sound_menu);
+                sound_menu = Mix_LoadWAV("menu.wav");
+                if (sound_menu != NULL)
+                    Mix_PlayChannel(-1, sound_menu, 0);
 
                 //Cap nhat lai toa do may bay
                 plane.SetX(100);
@@ -299,10 +302,15 @@ int main(int argc, char* argv[])
     }
 
     //Giai phong bo nho
+    // Giải phóng bộ nhớ cho âm thanh
+    Mix_FreeChunk(sound_shot);
+    Mix_FreeChunk(sound_menu);
+    Mix_FreeChunk(sound_boom);
+
     for (int i = 0; i < NUM_FRAMES; ++i)
         SDL_FreeSurface(frames[i]);
-    for (int i = 0; i < NUM_FRAMES_ENTER; ++i)
-        SDL_FreeSurface(frames_enter[i]);
+    /*for (int i = 0; i < NUM_FRAMES_ENTER; ++i)
+        SDL_FreeSurface(frames_enter[i]);*/
     CleanUp(g);
     SDL_FreeSurface(plane.GetImage());
     SDL_Quit();
