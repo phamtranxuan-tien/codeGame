@@ -277,12 +277,22 @@ int main(int argc, char* argv[])
                 replayButton = resizeImage(replayButton, 1010 / 2, 120 / 2);
                 replayButton = g.SplitBackground(replayButton);
 
+                // Load ảnh "esp"
+                SDL_Surface* espButton = g.LoadImage("esp.png");
+                if (!replayButton) {
+                    std::cerr << "Failed to load esp button image!" << std::endl;
+                }
+                espButton = resizeImage(espButton, 1010 / 2, 120 / 2);
+                espButton = g.SplitBackground(espButton);
+
                 // Ve menu len man hinh
                 ApplySurface(menu, screen, 0, 0);
-                ApplySurface(replayButton, screen, 300, 620);
+                ApplySurface(replayButton, screen, 280, 580);
+                ApplySurface(espButton, screen, 300, 620);
                 // Giai phong bo nho anh "Replay"
                 SDL_FreeSurface(replayButton);
-
+                // Giai phong bo nho anh "esp"
+                SDL_FreeSurface(espButton);
 
                 for (int i = 0; i < Sum_of_Enemy; i++)
                 {
