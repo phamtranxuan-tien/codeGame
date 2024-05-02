@@ -69,6 +69,23 @@ int main(int argc, char* argv[])
         }
     }
 
+    // Load cac frame_boomb anh vao mot mang
+    SDL_Surface* frames_boomb[9] = { NULL };
+    temp_enter = NULL;
+    for (int i = 1; i <= 8; ++i) {
+        string filename = "boomb_0";
+        filename += to_string(i);
+        filename += ".png";
+        g.SetImage(g.LoadImage(filename));
+        g.SetImage(resizeImage(g.GetImage(), 200 , 200));
+        g.SetImage(g.SplitBackground(g.GetImage()));
+        frames_boomb[i - 1] = g.GetImage();
+        if (frames_boomb[i - 1] == nullptr) {
+            std::cerr << "Failed to load frame " << filename << "!" << std::endl;
+            return 0;
+        }
+    }
+
     //Khoi tao ngau nhien vi tri cua ke dich
     srand(time(NULL));
     for (int i = 0; i < Sum_of_Enemy; i++)
@@ -88,6 +105,9 @@ int main(int argc, char* argv[])
 
     int currentFrame = 0;
     Uint32 lastFrameTime = 0;
+    int currentFrame1 = 0;
+    Uint32 lastFrameTime1 = 0;
+    int x_temp = plane.GetX(), y_temp = plane.GetY();
 
     while (!is_quit)
     {
@@ -157,8 +177,27 @@ int main(int argc, char* argv[])
         else if (Play == 1)
         {
             tt = 1;
+            if (currentFrame1 == 7)
+            {
+                Play = -1;
+                currentFrame1 = 0;
+            }
+            if (plane.GetX() != -300)
+                x_temp = plane.GetX(), y_temp = plane.GetY();
+            Uint32 currentTime1 = SDL_GetTicks();
+            if (currentTime1 - lastFrameTime1 >= 100 && plane.GetMau()[0].GetHP() == 0) {
+                plane.SetX(-300);
+                plane.SetY(-300);
+                ApplySurface(frames_boomb[currentFrame1], screen, x_temp, y_temp);
+                SDL_Flip(screen);
+                currentFrame1 = (currentFrame1 + 1) % 8;
+                lastFrameTime1 = currentTime1;
+                
+            }
+                
+            
+           
             Uint32 currentTime = SDL_GetTicks();
-
             // Kiem tra thoi gian giua cac frame
             if (currentTime - lastFrameTime >= FRAME_DELAY) {
                 // Xoa man hinh
@@ -188,7 +227,7 @@ int main(int argc, char* argv[])
                 plane.Move();
                 plane.Shoot();
                 plane.Crush(e);
-
+                    
                 //Cap nhat toa do cua dich va dan cua dich
                 for (int i = 0; i < e.size(); i++)
                     if (e[i].GetX() != -1 && e[i].GetY() != -1)

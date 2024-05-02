@@ -94,10 +94,6 @@ void main_Object::Damage()
     {
         y_val = 0;
         x_val = 0;
-        x = -300;
-        y = -300;
-        Play = -1;
-        Die();
         return;
     }
 }
@@ -375,7 +371,7 @@ void main_Object::Die()
     //Hien thi cac frame_boomb
     int currentFrame = 0;
     Uint32 lastFrameTime = 0;
-    while(currentFrame < 8)
+ //   while(currentFrame != 7)
     {
         Uint32 currentTime = SDL_GetTicks();
         if (currentTime - lastFrameTime >= FRAME_DELAY_ENTER) {
