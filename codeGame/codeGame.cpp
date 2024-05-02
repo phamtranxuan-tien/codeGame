@@ -15,8 +15,8 @@ int main(int argc, char* argv[])
     vector <bullet_Object> a;
     vector <enemy_Object> e;
     enemy_Object enemy_temp;
-    SDL_Surface* menu = NULL;
-    Mix_Chunk* sound_shot=NULL, * sound_menu = NULL, * sound_boom = NULL;
+    SDL_Surface* menu = NULL, *victory = NULL;
+    Mix_Chunk* sound_shot=NULL, * sound_menu = NULL, * sound_boom = NULL, * sound_victory = NULL;
 
     int tt = 0;
 
@@ -34,6 +34,12 @@ int main(int argc, char* argv[])
     g.SetImage(g.LoadImage("Menu.png"));
     menu = g.GetImage();
     menu = resizeImage(menu, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    g.SetImage(g.LoadImage("victory.jpg"));
+    g.SetImage(resizeImage(g.GetImage(), SCREEN_WIDTH, SCREEN_HEIGHT));
+    g.SetImage(g.SplitBackground(g.GetImage()));
+    victory = g.GetImage();
+    
 
     //Load cac frame anh vao mang
     SDL_Surface* frames[NUM_FRAMES] = { NULL };
@@ -238,7 +244,17 @@ int main(int argc, char* argv[])
                             e[i].Shoot();
                         e[i].Move();
                     }
-
+                
+                if (e.size() == 0)
+                {
+                    ApplySurface(victory, screen, 0, 0);
+                    sound_victory = Mix_LoadWAV("victory.wav");
+                    if (sound_victory != NULL)
+                        Mix_PlayChannel(-1, sound_victory, 0);
+                    SDL_Flip(screen);
+                    Play = -1;
+                    SDL_Delay(2000);
+                }
                 //Cap nhat man hinh
                 SDL_Flip(screen);
                 //cap nhat frame
@@ -262,14 +278,8 @@ int main(int argc, char* argv[])
                 //Cap nhat lai toa do may bay
                 plane.SetX(100);
                 plane.SetY(100);
-               
-                //Cap nhat lai vector dan
-                e.clear();
-                a = plane.GetBullet();
-                a.clear();
-                plane.SetBullet(a);
 
-                // Load ảnh "Replay"
+                // Load ảnh "Replay" hoac victory
                 SDL_Surface* replayButton = g.LoadImage("Replay.png");
                 if (!replayButton) {
                     std::cerr << "Failed to load replay button image!" << std::endl;
@@ -278,11 +288,19 @@ int main(int argc, char* argv[])
                 replayButton = g.SplitBackground(replayButton);
 
                 // Ve menu len man hinh
-                ApplySurface(menu, screen, 0, 0);
+                
+                if (e.size() != 0)
+                    ApplySurface(menu, screen, 0, 0);
                 ApplySurface(replayButton, screen, 300, 620);
+                 
                 // Giai phong bo nho anh "Replay"
                 SDL_FreeSurface(replayButton);
 
+                //Cap nhat lai vector dan
+                e.clear();
+                a = plane.GetBullet();
+                a.clear();
+                plane.SetBullet(a);
 
                 for (int i = 0; i < Sum_of_Enemy; i++)
                 {

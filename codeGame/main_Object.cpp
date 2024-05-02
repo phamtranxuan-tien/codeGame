@@ -298,6 +298,11 @@ void main_Object::Crush(vector <enemy_Object>& e)
                 e.erase(e.begin() + i);
         this->DamageEnemy(e);
     }
+    if (e.size() == 0)
+    {
+        y_val = 0;
+        x_val = 0;
+    }
 }
 
 vector <Heart_Object> main_Object::GetMau()
