@@ -247,7 +247,11 @@ int main(int argc, char* argv[])
                 for (int i = 0; i < e.size(); ++i)
                     if (e[i].GetX() == -300 && e[i].GetY() == -300)
                         e.erase(e.begin() + i);
-                    
+                if (e.size() == 0)
+                {
+                    y_val = 0;
+                    x_val = 0;
+                 }
                 //Cap nhat toa do cua dich va dan cua dich
                 for (int i = 0; i < e.size(); i++)
                     if (e[i].GetX() != -1 && e[i].GetY() != -1)

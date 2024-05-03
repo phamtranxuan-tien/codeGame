@@ -34,6 +34,7 @@ const int Sum_of_Heart = 3;
 extern SDL_Surface* screen;
 extern SDL_Event event;
 extern int Play;
+extern int y_val, x_val;
 
 struct Coor
 {

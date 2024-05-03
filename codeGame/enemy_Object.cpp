@@ -11,10 +11,22 @@ void enemy_Object::Move()
 		x = x - 5;
 }
 
-void enemy_Object::Destroy(vector <bullet_Object>& a, SDL_Surface* frames_boomb[])
+void enemy_Object::Destroy(vector <bullet_Object>& a)
 {
 	for (int i = 0; i < a.size(); i++)
-		if (a[i].GetX() >= this->GetX() + 30 && a[i].GetY() + 5 <= this->GetY() + 132 && a[i].GetY() + 5 >= this->GetY() + 40)
+//		if (a[i].GetX() >= this->GetX() + 30 && a[i].GetY() + 5 <= this->GetY() + 132 && a[i].GetY() + 5 >= this->GetY() + 40)
+		if ((a[i].GetX() < this->GetX() + 110 + (150 - 110) &&
+			a[i].GetX() + 0.5 > this->GetX() + 110 &&
+			a[i].GetY() < this->GetY() + 40 + (113 - 40) &&
+			a[i].GetY() + 4 > this->GetY() + 40) || 
+			(a[i].GetX() < this->GetX() + 70 + (175 - 75) &&
+				a[i].GetX() + 0.5 > this->GetX() + 70 &&
+				a[i].GetY() < this->GetY() + 60 + (95 - 60) &&
+				a[i].GetY() + 4 > this->GetY() + 60) ||
+			(a[i].GetX() < this->GetX() + 90 + (165 - 93) &&
+				a[i].GetX() + 0.5 > this->GetX() + 90 &&
+				a[i].GetY() < this->GetY() + 50 + (105 - 50) &&
+				a[i].GetY() + 4 > this->GetY() + 50))
 		{
 			x = -300;
 			y = -300;
