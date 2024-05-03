@@ -8,7 +8,7 @@ private:
 public:
  	enemy_Object(); //Ham khoi tao mac dinh
 	void Move(); //Di chuyen ke dich tren man hinh
-	void Destroy(vector <bullet_Object>&, SDL_Surface* []); //Loai bo doi tuong khi bị trung dan
+	void Destroy(vector <bullet_Object>&); //Loai bo doi tuong khi bị trung dan
 	vector<bullet_Object> GetBullet(); //Lay vector dan cua class dich 
 	void SetBullet(vector <bullet_Object>); //Cap nhat vector dan
 	void Shoot(); //Phuong thuc ban cua dich

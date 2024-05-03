@@ -11,7 +11,7 @@ void enemy_Object::Move()
 		x = x - 5;
 }
 
-void enemy_Object::Destroy(vector <bullet_Object>& a, SDL_Surface* frames_boomb[])
+void enemy_Object::Destroy(vector <bullet_Object>& a)
 {
 	for (int i = 0; i < a.size(); i++)
 		if (a[i].GetX() >= this->GetX() + 30 && a[i].GetY() + 5 <= this->GetY() + 132 && a[i].GetY() + 5 >= this->GetY() + 40)

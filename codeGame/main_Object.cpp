@@ -173,7 +173,7 @@ void main_Object::Crush(vector <bullet_Object>& b)
             b.erase(b.begin() + i);
 }
 
-void main_Object::Crush(vector <enemy_Object>& e, SDL_Surface* frames_boomb[])
+void main_Object::Crush(vector <enemy_Object>& e)
 {
     for (int i = 0; i < e.size(); ++i)
     {
