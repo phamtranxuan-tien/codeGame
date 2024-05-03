@@ -17,6 +17,7 @@ int Heart_Object::GetHP()
 {
 	return HP;
 }
+
 void Heart_Object::SetHP(int hp)
 {
 	HP = hp;

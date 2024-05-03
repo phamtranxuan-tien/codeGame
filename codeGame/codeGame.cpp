@@ -217,13 +217,13 @@ int main(int argc, char* argv[])
                 ApplySurface(frames[currentFrame], screen, 0, 0);
                 ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
 
-                for (int i = 0; i < e.size(); i++)
+                for (int i = e.size() - 1; i >= 0; i--)
                     if (e[i].GetX() != -1 && e[i].GetY() != -1)
                         ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
                 
                 //Pha huy dich neu bi ban trung
                 vector <bullet_Object> b = plane.GetBullet();
-                for (int i = 0; i < e.size(); i++)
+                for (int i = e.size() - 1; i >= 0; i--)
                     if (e[i].GetX() != -1 && e[i].GetY() != -1)
                     {
                         e[i].Destroy(b);
@@ -237,10 +237,10 @@ int main(int argc, char* argv[])
                 plane.Move();
                 plane.Shoot();
                 plane.Crush(e);
-                for (int i = 0; i < e.size(); ++i)
-                    if (e[i].GetX() == -300 && e[i].GetY() == -300)
+                /*for (int i = 0; i < e.size(); ++i)
+                    if (e[i].GetX() == -300 && e[i].GetY() == -300)*/
 
-                for (int i = 0; i < e.size(); ++i)
+                for (int i = e.size() - 1; i >= 0; i--)
                     if (e[i].GetX() == -300 && e[i].GetY() == -300)
                         e.erase(e.begin() + i);
                 if (e.size() == 0)
@@ -249,7 +249,7 @@ int main(int argc, char* argv[])
                     x_val = 0;
                  }
                 //Cap nhat toa do cua dich va dan cua dich
-                for (int i = 0; i < e.size(); i++)
+                for (int i = e.size() - 1; i >= 0; i--)
                     if (e[i].GetX() != -1 && e[i].GetY() != -1)
                     {
                         if (e[i].GetX() <= SCREEN_WIDTH)
@@ -292,7 +292,7 @@ int main(int argc, char* argv[])
                 plane.SetX(100);
                 plane.SetY(100);
 
-                // Load ảnh "Replay" hoac victory
+                // Load ảnh "Replay"
                 SDL_Surface* replayButton = g.LoadImage("Replay.png");
                 if (!replayButton) {
                     std::cerr << "Failed to load replay button image!" << std::endl;
@@ -338,15 +338,14 @@ int main(int argc, char* argv[])
     }
 
     //Giai phong bo nho
-    // Giải phóng bộ nhớ cho âm thanh
     Mix_FreeChunk(sound_shot);
     Mix_FreeChunk(sound_menu);
     Mix_FreeChunk(sound_boom);
 
     for (int i = 0; i < NUM_FRAMES; ++i)
         SDL_FreeSurface(frames[i]);
-    /*for (int i = 0; i < NUM_FRAMES_ENTER; ++i)
-        SDL_FreeSurface(frames_enter[i]);*/
+    for (int i = 0; i < NUM_FRAMES_ENTER; ++i)
+        SDL_FreeSurface(frames_enter[i]);
     CleanUp(g);
     SDL_FreeSurface(plane.GetImage());
     SDL_Quit();

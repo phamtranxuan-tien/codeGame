@@ -13,7 +13,7 @@ void enemy_Object::Move()
 
 void enemy_Object::Destroy(vector <bullet_Object>& a)
 {
-	for (int i = 0; i < a.size(); i++)
+	for (int i = a.size() - 1; i >= 0; i--)
 //		if (a[i].GetX() >= this->GetX() + 30 && a[i].GetY() + 5 <= this->GetY() + 132 && a[i].GetY() + 5 >= this->GetY() + 40)
 		if ((a[i].GetX() < this->GetX() + 110 + (150 - 110) &&
 			a[i].GetX() + 0.5 > this->GetX() + 110 &&
@@ -59,7 +59,7 @@ void enemy_Object::Shoot()
 			ApplySurface(bullets[i].GetImage(), screen, bullets[i].GetX(), bullets[i].GetY());
 		bullets[i].Move(1);
 	}
-	for (int i = 0; i < bullets.size(); ++i)
+	for (int i = bullets.size() - 1; i >= 0; i--)
 		if (bullets[i].GetX() <= 0 && bullets.size() > 1)
 		{
 			SDL_FreeSurface(bullets[i].GetImage());

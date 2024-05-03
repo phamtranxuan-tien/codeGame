@@ -73,7 +73,7 @@ void main_Object::SetBullet(vector <bullet_Object> v)
 
 void main_Object::Shoot()
 {
-    for (int i = 0; i < bullets.size(); ++i)
+    for (int i = bullets.size() - 1; i >= 0; i--)
     {
         ApplySurface(bullets[i].GetImage(), screen, bullets[i].GetX(), bullets[i].GetY());
         bullets[i].Move(0);
@@ -114,7 +114,7 @@ void main_Object::DamageEnemy(vector <enemy_Object> e)
 
 void main_Object::Crush(vector <bullet_Object>& b)
 {
-    for (int i = 0; i < b.size(); i++)
+    for (int i = b.size() - 1; i >= 0; i--)
     {
         // Dau may bay cai tien
         if (this->GetX() + 35 < b[i].GetX() + 0.5 &&
@@ -167,7 +167,7 @@ void main_Object::Crush(vector <bullet_Object>& b)
             b.erase(b.begin() + i);
         } 
     }
-    for (int i = 0; i < b.size(); ++i)
+    for (int i = b.size() - 1; i >= 0; i--)
         if (b[i].GetX() == -100 && b[i].GetY() == -100)
             b.erase(b.begin() + i);
 
@@ -177,7 +177,7 @@ void main_Object::Crush(vector <bullet_Object>& b)
 
 void main_Object::Crush(vector <enemy_Object>& e)
 {
-    for (int i = 0; i < e.size(); ++i)
+    for (int i = e.size() - 1; i >= 0; i--)
     {
         // Dau may bay cai tien
         if ((this->GetX() + 35 < e[i].GetX() + 110 + (150 - 110) &&
