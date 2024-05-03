@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
     enemy_Object enemy;
     vector <bullet_Object> a;
     vector <enemy_Object> e;
-    vector <COOR> Coor;
+
     enemy_Object enemy_temp;
     SDL_Surface* menu = NULL, *victory = NULL;
     Mix_Chunk* sound_shot=NULL, * sound_menu = NULL, * sound_boom = NULL, * sound_victory = NULL;
@@ -230,10 +230,6 @@ int main(int argc, char* argv[])
                         if (e[i].GetX() == -1 && e[i].GetY() == -1)
                             e.erase(e.begin() + i);
                     }
-                
-                for (int i = 0; i < e.size(); i++)
-                    Coor.push_back({ e[i].GetX(),e[i].GetY(),false });
-              
 
                 //Hien thi va cap nhat cac thuoc tinh cua doi tuong may bay
                 plane.DrawMau();
