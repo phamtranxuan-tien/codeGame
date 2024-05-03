@@ -11,13 +11,13 @@ void enemy_Object::Move()
 		x = x - 5;
 }
 
-void enemy_Object::Destroy(vector <bullet_Object>& a)
+void enemy_Object::Destroy(vector <bullet_Object>& a, SDL_Surface* frames_boomb[])
 {
 	for (int i = 0; i < a.size(); i++)
 		if (a[i].GetX() >= this->GetX() + 30 && a[i].GetY() + 5 <= this->GetY() + 132 && a[i].GetY() + 5 >= this->GetY() + 40)
 		{
-			x = -1;
-			y = -1;
+			x = -300;
+			y = -300;
 			a.erase(a.begin() + i);
 			return;
 		}
@@ -53,4 +53,19 @@ void enemy_Object::Shoot()
 			SDL_FreeSurface(bullets[i].GetImage());
 			bullets.erase(bullets.begin() + i);
 		}
+}
+
+void enemy_Object::Boom(SDL_Surface* frames_boomb[], int x_temp, int y_temp)
+{
+
+	int currentFrameEnemy = 0;
+	Uint32 lastFrameTimeEnemy = 0;
+	Uint32 currentTimeEnemy = SDL_GetTicks();
+	if (currentTimeEnemy - lastFrameTimeEnemy >= 100)
+	{
+		ApplySurface(frames_boomb[currentFrameEnemy], screen, x_temp, y_temp);
+		SDL_Flip(screen);
+		currentFrameEnemy = (currentFrameEnemy + 1) % 8;
+		lastFrameTimeEnemy = currentTimeEnemy;
+	}
 }

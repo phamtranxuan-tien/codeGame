@@ -24,7 +24,7 @@ public:
 	vector<bullet_Object> GetBullet(); //Lay vector dan
 	void SetBullet(vector <bullet_Object>); //Cap nhat vector dan
 	void Shoot(); //Ham ban dan 
-	void Crush(vector <enemy_Object>&); //Kiem tra va cham voi dich va cap nhat lai ke dich
+	void Crush(vector <enemy_Object>&, SDL_Surface* []); //Kiem tra va cham voi dich va cap nhat lai ke dich
 	void Crush(vector <bullet_Object>&); //Kiem tra va cham voi dan
 	void Damage(); //Gay thiet hai khi trung dan hoac va cham may may dich
 	void DamageEnemy(vector <enemy_Object>); //Gay thiet hai khi dich di qua pham vi can bao ve

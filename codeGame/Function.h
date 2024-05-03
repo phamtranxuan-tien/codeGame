@@ -35,6 +35,14 @@ extern SDL_Surface* screen;
 extern SDL_Event event;
 extern int Play;
 
+struct Coor
+{
+	int x;
+	int y;
+	bool Bom;
+};
+typedef struct Coor COOR;
+
 //Khai bao cac ham
 bool Init(); //Khoi tao cua so window 
 void CleanUp(base_Object); //Thu hoi bo nho

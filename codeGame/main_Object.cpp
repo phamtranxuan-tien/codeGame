@@ -94,9 +94,6 @@ void main_Object::Damage()
     {
         y_val = 0;
         x_val = 0;
-        x = -300;
-        y = -300;
-        Play = -1;
         return;
     }
 }
@@ -105,7 +102,7 @@ void main_Object::DamageEnemy(vector <enemy_Object> e)
 {
     for (int i = 0; i < e.size(); i++)
     {
-        if (e[i].GetX() <= -60)
+        if (e[i].GetX() <= -60 && e[i].GetX() > -300)
         {
             for (int i = 0; i < 3; i++)
                 this->Damage();
@@ -176,7 +173,7 @@ void main_Object::Crush(vector <bullet_Object>& b)
             b.erase(b.begin() + i);
 }
 
-void main_Object::Crush(vector <enemy_Object>& e)
+void main_Object::Crush(vector <enemy_Object>& e, SDL_Surface* frames_boomb[])
 {
     for (int i = 0; i < e.size(); ++i)
     {
@@ -214,8 +211,8 @@ void main_Object::Crush(vector <enemy_Object>& e)
                 this->GetY() + 80 + (111 - 80) > e[i].GetY() + 50))
         {
             this->Damage();
-            e[i].SetX(-200);
-            e[i].SetY(-200);
+            e[i].SetX(-300);
+            e[i].SetY(-300);
         }
 
         // Duoi may bay cai tien
@@ -290,16 +287,14 @@ void main_Object::Crush(vector <enemy_Object>& e)
                 this->GetY() + 80 + (110 - 80) > e[i].GetY() + 50))
         {
             this->Damage();
-            e[i].SetX(-200); 
-            e[i].SetY(-200);
+            e[i].SetX(-300); 
+            e[i].SetY(-300);
         }
         vector <bullet_Object> temp = e[i].GetBullet();
         this->Crush(temp);
         e[i].SetBullet(temp);
-        for (int i = 0; i < e.size(); ++i)
-            if (e[i].GetX() == -300 && e[i].GetY() == -300)
-                e.erase(e.begin() + i);
         this->DamageEnemy(e);
+        
     }
 }
 
