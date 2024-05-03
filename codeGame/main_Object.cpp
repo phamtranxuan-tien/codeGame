@@ -102,7 +102,7 @@ void main_Object::DamageEnemy(vector <enemy_Object> e)
 {
     for (int i = 0; i < e.size(); i++)
     {
-        if (e[i].GetX() <= -60 && e[i].GetX() > -300)
+        if (e[i].GetX() <= -54 && e[i].GetX() > -300)
         {
             for (int i = 0; i < 3; i++)
                 this->Damage();
@@ -295,6 +295,11 @@ void main_Object::Crush(vector <enemy_Object>& e, SDL_Surface* frames_boomb[])
         e[i].SetBullet(temp);
         this->DamageEnemy(e);
         
+    }
+    if (e.size() == 0)
+    {
+        y_val = 0;
+        x_val = 0;
     }
 }
 
