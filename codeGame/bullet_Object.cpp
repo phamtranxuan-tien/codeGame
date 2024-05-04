@@ -5,6 +5,11 @@ void bullet_Object::Create_bullet(int xx, int yy, string filename)
 	x = xx;
 	y = yy;
 	image = LoadImage(filename);
+	if (image == NULL)
+	{
+		cout << "Load image in method Create_bullet failed!";
+		exit(1);
+	}
 	image = SplitBackground(resizeImage(image, 30, 10));
 }
 
@@ -38,4 +43,9 @@ void bullet_Object::SetShoot()
 bool bullet_Object::GetShoot()
 {
 	return Shoot;
+}
+ 
+void bullet_Object::CleanUpBullet()
+{
+	SDL_FreeSurface(image);
 }

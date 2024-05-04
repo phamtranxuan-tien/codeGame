@@ -5,6 +5,11 @@ main_Object::main_Object()
 	x = 100;
 	y = 100;
     image = LoadImage("Mine_03.png");
+    if (image == NULL)
+    {
+        cout << "Load image in method main_Object failed!";
+        exit(1);
+    }
 }
 
 main_Object::~main_Object()
@@ -335,8 +340,8 @@ void main_Object::DestroyMau()
             SDL_Surface* img = LoadImage("Dead.png");
             if (img == NULL)
             {
-                cout << "Load HP failed";
-                return;
+                cout << "Load image in method DestroyMau failed!";
+                exit(1);
             }
             img = SplitBackground(resizeImage(img, 50, 50));
             Mau[i].SetImage(img);
@@ -349,4 +354,11 @@ void main_Object::DrawMau()
 {
     for (int i = 0; i < Sum_of_Heart; i++)
         ApplySurface(Mau[i].GetImage(), screen, Mau[i].GetX(), Mau[i].GetY());
+}
+
+void main_Object::CleanUpBullets()
+{
+    for (int i = 0;i < bullets.size();i++)
+        bullets[i].CleanUpBullet();
+    bullets.clear();
 }

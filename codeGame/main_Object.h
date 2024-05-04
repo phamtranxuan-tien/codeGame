@@ -34,5 +34,6 @@ public:
 	void CreateMau(); //Tao vector Mau
 	void DestroyMau(); //Thay doi thuoc tinh HP cua doi tuong Mau trong vector Mau khi doi tuong chinh bi thiet hai
 	void DrawMau(); //Ve vector Mau len man hinh
+	void CleanUpBullets();// Thu hoi bo nho hinh anh dan
 };
 

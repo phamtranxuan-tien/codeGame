@@ -2,7 +2,13 @@
 
 enemy_Object::enemy_Object()
 {
-	image = SplitBackground(LoadImage("Enemy_05.png"));
+	image = LoadImage("Enemy_05.png");
+	if (image == NULL)
+	{
+		cout << "Load image in method enemy_Object failed!";
+		exit(1);
+	}
+	image = SplitBackground(image);
 }
 
 void enemy_Object::Move()
@@ -65,4 +71,11 @@ void enemy_Object::Shoot()
 			SDL_FreeSurface(bullets[i].GetImage());
 			bullets.erase(bullets.begin() + i);
 		}
+}
+
+void enemy_Object::CleanUpBullets()
+{
+	for (int i = 0;i < bullets.size();i++)
+		bullets[i].CleanUpBullet();
+	bullets.clear();
 }

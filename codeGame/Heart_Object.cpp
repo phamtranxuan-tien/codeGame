@@ -10,6 +10,11 @@ void Heart_Object::CreateHeart(int xx, int yy, string filename)
 	x = xx;
 	y = yy;
 	image = LoadImage(filename);
+	if (image == NULL)
+	{
+		cout << "Load image in method CreateHeart failed!";
+		exit(1);
+	}
 	image = SplitBackground(resizeImage(image, 50, 50));
 }
 

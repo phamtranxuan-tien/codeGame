@@ -21,26 +21,22 @@ int main(int argc, char* argv[])
 
     int tt = 0;
 
-    //Khoi tao am thanh
-    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
-        std::cerr << "Failed to initialize SDL audio: " << SDL_GetError() << std::endl;
-        return 1;
-    }
-
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        std::cerr << "Failed to initialize SDL_mixer: " << Mix_GetError() << std::endl;
-        return 1;
-    }
-
     g.SetImage(g.LoadImage("Menu.png"));
     menu = g.GetImage();
     menu = resizeImage(menu, SCREEN_WIDTH, SCREEN_HEIGHT);
+    if (menu == nullptr) {
+        std::cerr << "Failed to load frame " << "Menu.png" << "!" << std::endl;
+        return 1;
+    }
 
     g.SetImage(g.LoadImage("victory.jpg"));
     g.SetImage(resizeImage(g.GetImage(), SCREEN_WIDTH, SCREEN_HEIGHT));
     g.SetImage(g.SplitBackground(g.GetImage()));
     victory = g.GetImage();
-    
+    if (victory == nullptr) {
+        std::cerr << "Failed to load frame " << "victory.jpg" << "!" << std::endl;
+        return 1;
+    }
 
     //Load cac frame anh vao mang
     SDL_Surface* frames[NUM_FRAMES] = { NULL };
@@ -130,7 +126,7 @@ int main(int argc, char* argv[])
                 is_quit = true; // Thoat neu nhan phim ESC
                 break;
             }
-            else if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) || Play == true)
+            else if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN) || Play == 1)
             {
                 Play = 1;
                 if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN)
@@ -308,10 +304,10 @@ int main(int argc, char* argv[])
                 SDL_FreeSurface(replayButton);
 
                 //Cap nhat lai vector dan
+                for (int i = 0;i < e.size();i++)
+                    e[i].CleanUpBullets();
                 e.clear();
-                a = plane.GetBullet();
-                a.clear();
-                plane.SetBullet(a);
+                plane.CleanUpBullets();
 
                 for (int i = 0; i < Sum_of_Enemy; i++)
                 {
@@ -320,12 +316,6 @@ int main(int argc, char* argv[])
                     e.push_back(enemy_temp);
                 }
 
-                
-
-                //Cap nhat lai mau
-                /*vector <Heart_Object> temp = plane.GetMau();
-                temp.clear();
-                plane.SetMau(temp);*/
                 plane.CreateMau();
                 tt = 0;
             }  
