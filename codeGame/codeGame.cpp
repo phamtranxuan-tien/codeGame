@@ -235,7 +235,10 @@ int main(int argc, char* argv[])
 
                 for (int i = e.size() - 1; i >= 0; i--)
                     if (e[i].GetX() == -300 && e[i].GetY() == -300)
+                    {
+                        e[i].CleanUpBullets();
                         e.erase(e.begin() + i);
+                    }
                 if (e.size() == 0)
                 {
                     y_val = 0;
