@@ -146,8 +146,6 @@ int main(int argc, char* argv[])
                         sound_shot = Mix_LoadWAV("shot.wav");
                         if (sound_shot != NULL)
                             Mix_PlayChannel(-1, sound_shot, 0);
-                        else
-                            std::cout << "\n khong load duoc am thanh ban.";
                     }
                 }
                 plane.Action(event);
@@ -157,18 +155,9 @@ int main(int argc, char* argv[])
         if (Play == 0)
         {
             //Phat am thanh nen
-            if (sound_menu == NULL)
-            {
-                sound_menu = Mix_LoadWAV("menu.wav");
-                if (sound_menu == NULL)
-                {
-                    std::cout << "\nKhong load duoc nhac menu.";
-                }
-            }
-            Mix_PlayChannel(-1, sound_menu, 0);
-            //sound_menu = Mix_LoadWAV("menu.wav");
-            //if (sound_menu != NULL)
-            //    Mix_PlayChannel(-1, sound_menu, 0);
+            sound_menu = Mix_LoadWAV("menu.wav");
+            if (sound_menu != NULL)
+                Mix_PlayChannel(-1, sound_menu, 0);
             ApplySurface(menu, screen, 0, 0);
             
             Uint32 currentTime = SDL_GetTicks();
@@ -196,18 +185,18 @@ int main(int argc, char* argv[])
                 ApplySurface(menu, screen, 0, 0);
                 Play = -1;
                 currentFrame1 = 0;
+                if (sound_boom != NULL) {
+                    Mix_FreeChunk(sound_boom);
+                    sound_boom = NULL; // Đặt con trỏ về NULL sau khi giải phóng
+                }
             }
             if (plane.GetX() != -300)
                 x_temp = plane.GetX(), y_temp = plane.GetY();
             Uint32 currentTime1 = SDL_GetTicks();
             if (currentTime1 - lastFrameTime1 >= 100 && plane.GetMau()[0].GetHP() == 0) {
-                if (sound_boom == NULL) 
-                {
-                    sound_boom = Mix_LoadWAV("boom_01.wav");
-                    if (sound_boom == NULL) 
-                        std::cout << "\nKhong load duoc am thanh no.";
-                }
-                Mix_PlayChannel(-1, sound_boom, 0);
+                sound_boom = Mix_LoadWAV("boom_01.wav");
+                if (sound_boom != NULL)
+                    Mix_PlayChannel(-1, sound_boom, 0);
 
                 plane.SetX(-300);
                 plane.SetY(-300);
@@ -273,12 +262,20 @@ int main(int argc, char* argv[])
                 {
         
                     ApplySurface(victory, screen, 0, 0);
+                    if (sound_victory != NULL) {
+                        Mix_FreeChunk(sound_victory);
+                        sound_victory = NULL; // Đặt con trỏ về NULL sau khi giải phóng
+                    }
                     sound_victory = Mix_LoadWAV("victory.wav");
                     if (sound_victory != NULL)
                         Mix_PlayChannel(-1, sound_victory, 0);
                     SDL_Flip(screen);
                     Play = -1;
-                    SDL_Delay(2000);         
+                    SDL_Delay(2000);
+                    if (sound_boom != NULL) {
+                        Mix_FreeChunk(sound_boom);
+                        sound_boom = NULL; // Đặt con trỏ về NULL sau khi giải phóng
+                    }
                 }
                 //Cap nhat man hinh
                 SDL_Flip(screen);
@@ -296,18 +293,11 @@ int main(int argc, char* argv[])
             if (tt == 1)
             {
                 //Load am thanh
-               /* Mix_FreeChunk(sound_menu);
-                sound_menu = Mix_LoadWAV("menu.wav");
-                if (sound_menu != NULL)
-                    Mix_PlayChannel(-1, sound_menu, 0);*/
-                if (sound_menu == NULL)
-                {
-                    sound_menu = Mix_LoadWAV("menu.wav");
-                    if (sound_menu == NULL)
-                    {
-                        std::cout << "\nkhong load duoc am thanh menu.";
-                    }
+                if (sound_menu != NULL) {
+                    Mix_FreeChunk(sound_menu);
+                    sound_menu = NULL; // Đặt con trỏ về NULL sau khi giải phóng
                 }
+                sound_menu = Mix_LoadWAV("menu.wav");
                 if (sound_menu != NULL)
                     Mix_PlayChannel(-1, sound_menu, 0);
 
@@ -358,9 +348,6 @@ int main(int argc, char* argv[])
     Mix_FreeChunk(sound_shot);
     Mix_FreeChunk(sound_menu);
     Mix_FreeChunk(sound_boom);
-    sound_menu = NULL;//new
-    sound_boom = NULL;
-    sound_shot = NULL;
 
     for (int i = 0; i < NUM_FRAMES; ++i)
         SDL_FreeSurface(frames[i]);
