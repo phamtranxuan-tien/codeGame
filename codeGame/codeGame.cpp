@@ -185,6 +185,10 @@ int main(int argc, char* argv[])
                 ApplySurface(menu, screen, 0, 0);
                 Play = -1;
                 currentFrame1 = 0;
+                if (sound_boom != NULL) {
+                    Mix_FreeChunk(sound_boom);
+                    sound_boom = NULL; // Đặt con trỏ về NULL sau khi giải phóng
+                }
             }
             if (plane.GetX() != -300)
                 x_temp = plane.GetX(), y_temp = plane.GetY();
@@ -193,6 +197,7 @@ int main(int argc, char* argv[])
                 sound_boom = Mix_LoadWAV("boom_01.wav");
                 if (sound_boom != NULL)
                     Mix_PlayChannel(-1, sound_boom, 0);
+
                 plane.SetX(-300);
                 plane.SetY(-300);
                 ApplySurface(frames_boomb[currentFrame1], screen, x_temp, y_temp);
@@ -257,12 +262,20 @@ int main(int argc, char* argv[])
                 {
         
                     ApplySurface(victory, screen, 0, 0);
+                    if (sound_victory != NULL) {
+                        Mix_FreeChunk(sound_victory);
+                        sound_victory = NULL; // Đặt con trỏ về NULL sau khi giải phóng
+                    }
                     sound_victory = Mix_LoadWAV("victory.wav");
                     if (sound_victory != NULL)
                         Mix_PlayChannel(-1, sound_victory, 0);
                     SDL_Flip(screen);
                     Play = -1;
-                    SDL_Delay(2000);         
+                    SDL_Delay(2000);
+                    if (sound_boom != NULL) {
+                        Mix_FreeChunk(sound_boom);
+                        sound_boom = NULL; // Đặt con trỏ về NULL sau khi giải phóng
+                    }
                 }
                 //Cap nhat man hinh
                 SDL_Flip(screen);
@@ -280,7 +293,10 @@ int main(int argc, char* argv[])
             if (tt == 1)
             {
                 //Load am thanh
-                Mix_FreeChunk(sound_menu);
+                if (sound_menu != NULL) {
+                    Mix_FreeChunk(sound_menu);
+                    sound_menu = NULL; // Đặt con trỏ về NULL sau khi giải phóng
+                }
                 sound_menu = Mix_LoadWAV("menu.wav");
                 if (sound_menu != NULL)
                     Mix_PlayChannel(-1, sound_menu, 0);
