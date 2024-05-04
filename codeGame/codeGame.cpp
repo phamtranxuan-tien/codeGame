@@ -168,7 +168,7 @@ int main(int argc, char* argv[])
                 else
                 {
                     std::cout << "\nKhong load duoc am thanh menu.";
-                    exit(1);
+                    return 1;
                 }
             }
             ApplySurface(menu, screen, 0, 0);
@@ -212,7 +212,7 @@ int main(int argc, char* argv[])
                     sound_boom = Mix_LoadWAV("boom_01.wav");
                     if (sound_boom == NULL) {
                         std::cout << "\nKhong load duoc am thanh no.";
-                        exit(1);
+                        return 1;
                     }
                 }
                 Mix_PlayChannel(-1, sound_boom, 0);
@@ -318,7 +318,7 @@ int main(int argc, char* argv[])
                     if (sound_menu == NULL)
                     {
                         std::cout << "\nKhong load duoc am thanh menu.";
-                        exit(1);
+                        return 1;
                     }
                 }
                 if (sound_menu != NULL) 
@@ -377,7 +377,6 @@ int main(int argc, char* argv[])
     Mix_FreeChunk(sound_shot);
     Mix_FreeChunk(sound_menu);
     Mix_FreeChunk(sound_boom);
-    sound_boom = NULL;
     sound_menu = NULL;
     sound_shot = NULL;
 
