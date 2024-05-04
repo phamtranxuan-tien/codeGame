@@ -333,6 +333,11 @@ void main_Object::DestroyMau()
         if (Mau[i].GetHP() == 1)
         {
             SDL_Surface* img = LoadImage("Dead.png");
+            if (img == NULL)
+            {
+                cout << "Load HP failed";
+                return;
+            }
             img = SplitBackground(resizeImage(img, 50, 50));
             Mau[i].SetImage(img);
             Mau[i].SetHP(0);
