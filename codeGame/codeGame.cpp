@@ -218,18 +218,14 @@ int main(int argc, char* argv[])
                 ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
 
                 for (int i = e.size() - 1; i >= 0; i--)
-                    if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                    if (e[i].GetX() != -300 && e[i].GetY() != -300)
                         ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
                 
                 //Pha huy dich neu bi ban trung
                 vector <bullet_Object> b = plane.GetBullet();
                 for (int i = e.size() - 1; i >= 0; i--)
-                    if (e[i].GetX() != -1 && e[i].GetY() != -1)
-                    {
+                    if (e[i].GetX() != -300 && e[i].GetY() != -300)
                         e[i].Destroy(b);
-                        if (e[i].GetX() == -1 && e[i].GetY() == -1)
-                            e.erase(e.begin() + i);
-                    }
 
                 //Hien thi va cap nhat cac thuoc tinh cua doi tuong may bay
                 plane.DrawMau();
@@ -250,7 +246,7 @@ int main(int argc, char* argv[])
                  }
                 //Cap nhat toa do cua dich va dan cua dich
                 for (int i = e.size() - 1; i >= 0; i--)
-                    if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                    if (e[i].GetX() != -300 && e[i].GetY() != -300)
                     {
                         if (e[i].GetX() <= SCREEN_WIDTH)
                             e[i].Shoot();

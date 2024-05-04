@@ -66,18 +66,3 @@ void enemy_Object::Shoot()
 			bullets.erase(bullets.begin() + i);
 		}
 }
-
-void enemy_Object::Boom(SDL_Surface* frames_boomb[], int x_temp, int y_temp)
-{
-
-	int currentFrameEnemy = 0;
-	Uint32 lastFrameTimeEnemy = 0;
-	Uint32 currentTimeEnemy = SDL_GetTicks();
-	if (currentTimeEnemy - lastFrameTimeEnemy >= 100)
-	{
-		ApplySurface(frames_boomb[currentFrameEnemy], screen, x_temp, y_temp);
-		SDL_Flip(screen);
-		currentFrameEnemy = (currentFrameEnemy + 1) % 8;
-		lastFrameTimeEnemy = currentTimeEnemy;
-	}
-}

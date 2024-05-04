@@ -170,9 +170,6 @@ void main_Object::Crush(vector <bullet_Object>& b)
     for (int i = b.size() - 1; i >= 0; i--)
         if (b[i].GetX() == -100 && b[i].GetY() == -100)
             b.erase(b.begin() + i);
-
-
-
 }
 
 void main_Object::Crush(vector <enemy_Object>& e)
