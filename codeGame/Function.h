@@ -24,11 +24,11 @@ const int NUM_FRAMES = 8;
 const int NUM_FRAMES_ENTER = 2;
 const int FRAME_DELAY = 50; // milliseconds
 const int FRAME_DELAY_ENTER = 3; // milliseconds
-const int Sum_of_Enemy = 99;
+const int Sum_of_Enemy = 5;
 //const int Sum_of_Enemy = 2;
 const int Sum_of_Bullet = 30;
 const int Sum_of_Enemy_Bullet = 1;
-const int Sum_of_Heart = 20;
+const int Sum_of_Heart = 3;
 
 //Khai bao bien toan cuc
 extern SDL_Surface* screen;
