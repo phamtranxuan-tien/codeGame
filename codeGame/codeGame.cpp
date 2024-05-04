@@ -203,6 +203,7 @@ int main(int argc, char* argv[])
                 SDL_Flip(screen);
                 currentFrame1 = (currentFrame1 + 1) % 8;
                 lastFrameTime1 = currentTime1;
+                continue;
             }
                 
             
@@ -272,6 +273,7 @@ int main(int argc, char* argv[])
                 // Cap nhat thoi gian cuoi cung
                 lastFrameTime = currentTime;
             }
+
             a.clear();
         }
         else
