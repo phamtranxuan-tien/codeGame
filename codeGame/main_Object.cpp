@@ -12,7 +12,6 @@ main_Object::~main_Object()
 	return;
 }
 
-int y_val = 0, x_val = 0;
 void main_Object::Move()
 {
     if (x + x_val >= 0 && x + x_val <= SCREEN_WIDTH - 270)
@@ -171,6 +170,9 @@ void main_Object::Crush(vector <bullet_Object>& b)
     for (int i = 0; i < b.size(); ++i)
         if (b[i].GetX() == -100 && b[i].GetY() == -100)
             b.erase(b.begin() + i);
+
+
+
 }
 
 void main_Object::Crush(vector <enemy_Object>& e)
@@ -295,11 +297,6 @@ void main_Object::Crush(vector <enemy_Object>& e)
         e[i].SetBullet(temp);
         this->DamageEnemy(e);
         
-    }
-    if (e.size() == 0)
-    {
-        y_val = 0;
-        x_val = 0;
     }
 }
 
