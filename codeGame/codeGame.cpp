@@ -14,6 +14,7 @@ int main(int argc, char* argv[])
     enemy_Object enemy;
     vector <bullet_Object> a;
     vector <enemy_Object> e;
+
     enemy_Object enemy_temp;
     SDL_Surface* menu = NULL, *victory = NULL;
     Mix_Chunk* sound_shot=NULL, * sound_menu = NULL, * sound_boom = NULL, * sound_victory = NULL;
@@ -185,6 +186,7 @@ int main(int argc, char* argv[])
             tt = 1;
             if (currentFrame1 == 7)
             {
+                ApplySurface(menu, screen, 0, 0);
                 Play = -1;
                 currentFrame1 = 0;
             }
@@ -201,6 +203,7 @@ int main(int argc, char* argv[])
                 SDL_Flip(screen);
                 currentFrame1 = (currentFrame1 + 1) % 8;
                 lastFrameTime1 = currentTime1;
+                continue;
             }
                 
             
@@ -215,45 +218,52 @@ int main(int argc, char* argv[])
                 ApplySurface(frames[currentFrame], screen, 0, 0);
                 ApplySurface(plane.GetImage(), screen, plane.GetX(), plane.GetY());
 
-                for (int i = 0; i < e.size(); i++)
-                    if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                for (int i = e.size() - 1; i >= 0; i--)
+                    if (e[i].GetX() != -300 && e[i].GetY() != -300)
                         ApplySurface(e[i].GetImage(), screen, e[i].GetX(), e[i].GetY());
                 
                 //Pha huy dich neu bi ban trung
                 vector <bullet_Object> b = plane.GetBullet();
-                for (int i = 0; i < e.size(); i++)
-                    if (e[i].GetX() != -1 && e[i].GetY() != -1)
-                    {
+                for (int i = e.size() - 1; i >= 0; i--)
+                    if (e[i].GetX() != -300 && e[i].GetY() != -300)
                         e[i].Destroy(b);
-                        if (e[i].GetX() == -1 && e[i].GetY() == -1)
-                            e.erase(e.begin() + i);
-                    }
-                
+
                 //Hien thi va cap nhat cac thuoc tinh cua doi tuong may bay
                 plane.DrawMau();
                 plane.SetBullet(b);
                 plane.Move();
                 plane.Shoot();
                 plane.Crush(e);
-                    
+                /*for (int i = 0; i < e.size(); ++i)
+                    if (e[i].GetX() == -300 && e[i].GetY() == -300)*/
+
+                for (int i = e.size() - 1; i >= 0; i--)
+                    if (e[i].GetX() == -300 && e[i].GetY() == -300)
+                        e.erase(e.begin() + i);
+                if (e.size() == 0)
+                {
+                    y_val = 0;
+                    x_val = 0;
+                 }
                 //Cap nhat toa do cua dich va dan cua dich
-                for (int i = 0; i < e.size(); i++)
-                    if (e[i].GetX() != -1 && e[i].GetY() != -1)
+                for (int i = e.size() - 1; i >= 0; i--)
+                    if (e[i].GetX() != -300 && e[i].GetY() != -300)
                     {
                         if (e[i].GetX() <= SCREEN_WIDTH)
                             e[i].Shoot();
                         e[i].Move();
                     }
                 
-                if (e.size() == 0)
+                if (e.size() == 0 && plane.GetMau()[0].GetHP() == 1)
                 {
+        
                     ApplySurface(victory, screen, 0, 0);
                     sound_victory = Mix_LoadWAV("victory.wav");
                     if (sound_victory != NULL)
                         Mix_PlayChannel(-1, sound_victory, 0);
                     SDL_Flip(screen);
                     Play = -1;
-                    SDL_Delay(2000);
+                    SDL_Delay(2000);         
                 }
                 //Cap nhat man hinh
                 SDL_Flip(screen);
@@ -263,6 +273,7 @@ int main(int argc, char* argv[])
                 // Cap nhat thoi gian cuoi cung
                 lastFrameTime = currentTime;
             }
+
             a.clear();
         }
         else
@@ -279,7 +290,7 @@ int main(int argc, char* argv[])
                 plane.SetX(100);
                 plane.SetY(100);
 
-                // Load ảnh "Replay" hoac victory
+                // Load ảnh "Replay"
                 SDL_Surface* replayButton = g.LoadImage("Replay.png");
                 if (!replayButton) {
                     std::cerr << "Failed to load replay button image!" << std::endl;
@@ -309,7 +320,12 @@ int main(int argc, char* argv[])
                     e.push_back(enemy_temp);
                 }
 
+                
+
                 //Cap nhat lai mau
+                /*vector <Heart_Object> temp = plane.GetMau();
+                temp.clear();
+                plane.SetMau(temp);*/
                 plane.CreateMau();
                 tt = 0;
             }  
@@ -320,15 +336,14 @@ int main(int argc, char* argv[])
     }
 
     //Giai phong bo nho
-    // Giải phóng bộ nhớ cho âm thanh
     Mix_FreeChunk(sound_shot);
     Mix_FreeChunk(sound_menu);
     Mix_FreeChunk(sound_boom);
 
     for (int i = 0; i < NUM_FRAMES; ++i)
         SDL_FreeSurface(frames[i]);
-    /*for (int i = 0; i < NUM_FRAMES_ENTER; ++i)
-        SDL_FreeSurface(frames_enter[i]);*/
+    for (int i = 0; i < NUM_FRAMES_ENTER; ++i)
+        SDL_FreeSurface(frames_enter[i]);
     CleanUp(g);
     SDL_FreeSurface(plane.GetImage());
     SDL_Quit();
