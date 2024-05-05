@@ -12,6 +12,6 @@ public:
 	vector<bullet_Object> GetBullet(); //Lay vector dan cua class dich 
 	void SetBullet(vector <bullet_Object>); //Cap nhat vector dan
 	void Shoot(); //Phuong thuc ban cua dich
-	void Boom(SDL_Surface* [],int, int); //Phuong thuc phat no
+	void CleanUpBullets();// Thu hoi bo nho hinh anh dan
 };
 

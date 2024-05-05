@@ -2,7 +2,13 @@
 
 enemy_Object::enemy_Object()
 {
-	image = SplitBackground(LoadImage("Enemy_05.png"));
+	image = LoadImage("Enemy_05.png");
+	if (image == NULL)
+	{
+		cout << "Load image in method enemy_Object failed!";
+		exit(1);
+	}
+	image = SplitBackground(image);
 }
 
 void enemy_Object::Move()
@@ -13,7 +19,7 @@ void enemy_Object::Move()
 
 void enemy_Object::Destroy(vector <bullet_Object>& a)
 {
-	for (int i = 0; i < a.size(); i++)
+	for (int i = a.size() - 1; i >= 0; i--)
 //		if (a[i].GetX() >= this->GetX() + 30 && a[i].GetY() + 5 <= this->GetY() + 132 && a[i].GetY() + 5 >= this->GetY() + 40)
 		if ((a[i].GetX() < this->GetX() + 110 + (150 - 110) &&
 			a[i].GetX() + 0.5 > this->GetX() + 110 &&
@@ -59,7 +65,7 @@ void enemy_Object::Shoot()
 			ApplySurface(bullets[i].GetImage(), screen, bullets[i].GetX(), bullets[i].GetY());
 		bullets[i].Move(1);
 	}
-	for (int i = 0; i < bullets.size(); ++i)
+	for (int i = bullets.size() - 1; i >= 0; i--)
 		if (bullets[i].GetX() <= 0 && bullets.size() > 1)
 		{
 			SDL_FreeSurface(bullets[i].GetImage());
@@ -67,17 +73,9 @@ void enemy_Object::Shoot()
 		}
 }
 
-void enemy_Object::Boom(SDL_Surface* frames_boomb[], int x_temp, int y_temp)
+void enemy_Object::CleanUpBullets()
 {
-
-	int currentFrameEnemy = 0;
-	Uint32 lastFrameTimeEnemy = 0;
-	Uint32 currentTimeEnemy = SDL_GetTicks();
-	if (currentTimeEnemy - lastFrameTimeEnemy >= 100)
-	{
-		ApplySurface(frames_boomb[currentFrameEnemy], screen, x_temp, y_temp);
-		SDL_Flip(screen);
-		currentFrameEnemy = (currentFrameEnemy + 1) % 8;
-		lastFrameTimeEnemy = currentTimeEnemy;
-	}
+	for (int i = 0;i < bullets.size();i++)
+		bullets[i].CleanUpBullet();
+	bullets.clear();                       
 }

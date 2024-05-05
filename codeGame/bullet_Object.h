@@ -15,5 +15,6 @@ public:
 	void Move(int); //Di chuyen vien dan 
 	void SetShoot(); //Cap nhat lai gia tri cua thuoc tinh Shoot
 	bool GetShoot(); //Lay gia tri cua thuoc tinh Shoot
+	void CleanUpBullet(); //Thu hoi bo nho hinh anh
 };
 
