@@ -19,6 +19,12 @@ int main(int argc, char* argv[])
     SDL_Surface* menu = NULL, *victory = NULL;
     Mix_Chunk* sound_shot=NULL, * sound_menu = NULL, * sound_boom = NULL, * sound_victory = NULL;
 
+    //Load am thanh
+    sound_shot = Mix_LoadWAV("shot.wav");
+    sound_menu = Mix_LoadWAV("menu.wav");
+    sound_victory = Mix_LoadWAV("victory.wav");
+    sound_boom = Mix_LoadWAV("boom_01.wav");
+
     int tt = 0;
 
     g.SetImage(g.LoadImage("Menu.png"));
@@ -143,7 +149,7 @@ int main(int argc, char* argv[])
                         plane.SetBullet(a);
                         
                         //Phat am thanh tieng sung
-                        sound_shot = Mix_LoadWAV("shot.wav");
+                        
                         if (sound_shot != NULL)
                             Mix_PlayChannel(-1, sound_shot, 0);
                     }
@@ -152,10 +158,10 @@ int main(int argc, char* argv[])
 
             }
         }
+      
         if (Play == 0)
         {
             //Phat am thanh nen
-            sound_menu = Mix_LoadWAV("menu.wav");
             if (sound_menu != NULL)
                 Mix_PlayChannel(-1, sound_menu, 0);
             ApplySurface(menu, screen, 0, 0);
@@ -180,24 +186,27 @@ int main(int argc, char* argv[])
         else if (Play == 1)
         {
             tt = 1;
-            if (currentFrame1 == 7)
+            Uint32 currentTime1 = SDL_GetTicks();
+            if (currentFrame1 > 7 )
             {
                 ApplySurface(menu, screen, 0, 0);
                 Play = -1;
                 currentFrame1 = 0;
+                
             }
             if (plane.GetX() != -300)
                 x_temp = plane.GetX(), y_temp = plane.GetY();
-            Uint32 currentTime1 = SDL_GetTicks();
+            
             if (currentTime1 - lastFrameTime1 >= 100 && plane.GetMau()[0].GetHP() == 0) {
-                 sound_boom = Mix_LoadWAV("boom_01.wav");
+                sound_boom = Mix_LoadWAV("boom_01.wav");
                 if (sound_boom != NULL)
                     Mix_PlayChannel(-1, sound_boom, 0);
+                
                 plane.SetX(-300);
                 plane.SetY(-300);
                 ApplySurface(frames_boomb[currentFrame1], screen, x_temp, y_temp);
                 SDL_Flip(screen);
-                currentFrame1 = (currentFrame1 + 1) % 8;
+                currentFrame1 = (currentFrame1 + 1) ;
                 lastFrameTime1 = currentTime1;
                 continue;
             }
@@ -230,12 +239,13 @@ int main(int argc, char* argv[])
                 plane.Move();
                 plane.Shoot();
                 plane.Crush(e);
-                /*for (int i = 0; i < e.size(); ++i)
-                    if (e[i].GetX() == -300 && e[i].GetY() == -300)*/
 
                 for (int i = e.size() - 1; i >= 0; i--)
                     if (e[i].GetX() == -300 && e[i].GetY() == -300)
+                    {
+                        e[i].CleanUpBullets();
                         e.erase(e.begin() + i);
+                    }
                 if (e.size() == 0)
                 {
                     y_val = 0;
@@ -254,12 +264,12 @@ int main(int argc, char* argv[])
                 {
         
                     ApplySurface(victory, screen, 0, 0);
-                    sound_victory = Mix_LoadWAV("victory.wav");
+              
                     if (sound_victory != NULL)
                         Mix_PlayChannel(-1, sound_victory, 0);
                     SDL_Flip(screen);
                     Play = -1;
-                    SDL_Delay(2000);         
+                    SDL_Delay(2000);
                 }
                 //Cap nhat man hinh
                 SDL_Flip(screen);
@@ -276,9 +286,7 @@ int main(int argc, char* argv[])
         {
             if (tt == 1)
             {
-                //Load am thanh
-                Mix_FreeChunk(sound_menu);
-                sound_menu = Mix_LoadWAV("menu.wav");
+                SDL_Delay(500);
                 if (sound_menu != NULL)
                     Mix_PlayChannel(-1, sound_menu, 0);
 

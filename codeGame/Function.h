@@ -24,9 +24,9 @@ const int NUM_FRAMES = 8;
 const int NUM_FRAMES_ENTER = 2;
 const int FRAME_DELAY = 50; // milliseconds
 const int FRAME_DELAY_ENTER = 3; // milliseconds
-const int Sum_of_Enemy = 99;
+const int Sum_of_Enemy = 30;
 //const int Sum_of_Enemy = 2;
-const int Sum_of_Bullet = 30;
+const int Sum_of_Bullet = 10;
 const int Sum_of_Enemy_Bullet = 1;
 const int Sum_of_Heart = 3;
 

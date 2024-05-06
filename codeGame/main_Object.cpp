@@ -84,7 +84,7 @@ void main_Object::Shoot()
         bullets[i].Move(0);
         if (bullets[i].GetX() >= SCREEN_WIDTH)
         {
-            SDL_FreeSurface(bullets[i].GetImage());
+            bullets[i].CleanUpBullet();
             bullets.erase(bullets.begin() + i);
         }
             
@@ -108,7 +108,7 @@ void main_Object::DamageEnemy(vector <enemy_Object> e)
     {
         if (e[i].GetX() <= -54 && e[i].GetX() > -300)
         {
-            for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
                 this->Damage();
             x = -300;
             y = -300;
@@ -139,7 +139,8 @@ void main_Object::Crush(vector <bullet_Object>& b)
             this->GetY() + 80 + (111 - 80) > b[i].GetY())
         {
             this->Damage();
-            b.erase(b.begin() + i);
+            b[i].SetX(-100);
+            b[i].SetY(-100);
         }
 
         // Duoi may bay cai tien
@@ -149,7 +150,8 @@ void main_Object::Crush(vector <bullet_Object>& b)
             this->GetY() + 40 + (62 - 40) > b[i].GetY())
         {
             this->Damage();
-            b.erase(b.begin() + i);
+            b[i].SetX(-100);
+            b[i].SetY(-100);
         }
 
         // Mui may bay cai tien
@@ -159,7 +161,8 @@ void main_Object::Crush(vector <bullet_Object>& b)
             this->GetY() + 90 + (105 - 90) > b[i].GetY())
         {
             this->Damage();
-            b.erase(b.begin() + i);
+            b[i].SetX(-100);
+            b[i].SetY(-100);
         }
 
         // Sung may bay cai tien
@@ -169,12 +172,18 @@ void main_Object::Crush(vector <bullet_Object>& b)
             this->GetY() + 111 + (127 - 111) > b[i].GetY())
         {
             this->Damage();
-            b.erase(b.begin() + i);
+            b[i].SetX(-100);
+            b[i].SetY(-100);
         } 
     }
     for (int i = b.size() - 1; i >= 0; i--)
         if (b[i].GetX() == -100 && b[i].GetY() == -100)
+        {
+            b[i].CleanUpBullet();
             b.erase(b.begin() + i);
+        }
+            
+    
 }
 
 void main_Object::Crush(vector <enemy_Object>& e)
@@ -322,18 +331,19 @@ void main_Object::CreateMau()
             SDL_FreeSurface(Mau[i].GetImage());
         Mau.clear();
     }
-        
+    
     for (int i = 0; i < Sum_of_Heart; i++)
     {   
         Heart_Object temp;
         temp.CreateHeart(XMau, YMau, "Alive.png");
         Mau.push_back(temp);
         XMau += 60;
-    }
+    } 
 }
 
 void main_Object::DestroyMau()
 {
+    
     for (int i = Sum_of_Heart - 1; i >= 0; i--)
         if (Mau[i].GetHP() == 1)
         {
@@ -345,8 +355,8 @@ void main_Object::DestroyMau()
             }
             img = SplitBackground(resizeImage(img, 50, 50));
             Mau[i].SetImage(img);
-            Mau[i].SetHP(0);
-            return;
+            Mau[i].SetHP(0);  
+            break;
         }
 }   
 
