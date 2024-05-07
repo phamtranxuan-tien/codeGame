@@ -150,7 +150,7 @@ int main(int argc, char* argv[])
                         
                         //Phat am thanh tieng sung
                         
-                        if (sound_shot != NULL)
+                        //if (sound_shot != NULL)
                             Mix_PlayChannel(-1, sound_shot, 0);
                     }
                 }
@@ -158,7 +158,7 @@ int main(int argc, char* argv[])
 
             }
         }
-      
+
         if (Play == 0)
         {
             //Phat am thanh nen
@@ -286,9 +286,12 @@ int main(int argc, char* argv[])
         {
             if (tt == 1)
             {
-                SDL_Delay(500);
-                if (sound_menu != NULL)
-                    Mix_PlayChannel(-1, sound_menu, 0);
+                SDL_Delay(1500);
+                //if (sound_menu != NULL)
+                if (sound_menu == NULL)
+                    std::cerr << "Failed to load sound_menu!" << std::endl;
+                Mix_HaltChannel(-1);
+                Mix_PlayChannel(-1, sound_menu, 0);
 
                 //Cap nhat lai toa do may bay
                 plane.SetX(100);
