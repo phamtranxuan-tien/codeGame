@@ -174,7 +174,7 @@ int main(int argc, char* argv[])
                 // Ve anh plane va emeny len man hinh
                 ApplySurface(frames_enter[currentFrame], screen, SCREEN_WIDTH / 2 - 1010 / 4, 633);
                 // Cap nhat man hinh
-1                SDL_Flip(screen);
+                SDL_Flip(screen);
 
                 // Cap nhat frame
                 currentFrame = (currentFrame + 1) % NUM_FRAMES_ENTER;
